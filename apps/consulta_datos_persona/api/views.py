@@ -41,12 +41,12 @@ class ConsultaDatosPersonaViewSet(viewsets.GenericViewSet):
                         } 
 
 
-                        verifiacion_data = self.get_serializer(data=data)
+                        verificacion_data = self.get_serializer(data=data)
 
-                        if verifiacion_data.is_valid():
-                            return Response(verifiacion_data.data, status=status.HTTP_200_OK)
+                        if verificacion_data.is_valid():
+                            return Response(verificacion_data.data, status=status.HTTP_200_OK)
                         else:
-                            return Response(verifiacion_data.errors, status=status.HTTP_400_BAD_REQUEST)
+                            return Response(verificacion_data.errors, status=status.HTTP_400_BAD_REQUEST)
             
             else:
 

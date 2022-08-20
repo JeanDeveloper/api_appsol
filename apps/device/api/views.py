@@ -3,7 +3,6 @@ from django.db import connection
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
-
 class RegistrarDispositivoViewSet(viewsets.GenericViewSet):
 
     serializer_class = RegistrarDispositivoSerializer
@@ -57,36 +56,85 @@ class RegistrarDispositivoViewSet(viewsets.GenericViewSet):
 class ConsultarEstadoViewSet(viewsets.GenericViewSet):
 
     serializer_class = ConsultarEstadoSerializer
-
     def list(self, request):
-
         try:
             params = self.request.query_params.dict()
             
             if params.keys().__contains__('serial'):
-
                 with connection.cursor() as cursor:
-
                     serialNumber = params['serial']
                     cursor.execute( 
                         "DECLARE @result SMALLINT, @state SMALLINT;" 
                         "EXECUTE @result = [dbo].[APPS_VERIFICAR_ESTADO_DISPOSITIVO] '{0}',@estado=@state OUTPUT "
                         "SELECT  @state AS 'estado';".format(serialNumber)
                     )
-
                     estado = cursor.fetchone()
-
                     print(estado[0])
                     
                     return Response({
                         'estado': estado[0]
                     },status= status.HTTP_200_OK)
-
             else:
                 return Response({
                     'error': 'No se encontro el parametro solicitado'
-                }, status= status.HTTO_400_BAD_REQUEST)
-
+                }, status= status.HTTP_400_BAD_REQUEST)
         finally:
             pass
-            # cursor.close()
+
+class RelacionDispositivoServicioViewSet(viewsets.GenericViewSet):
+    serializer_class = RelacionDispositivoServicioSerializer
+
+    def list(self, request):
+        try:
+            params = self.request.query_params.dict()
+
+            if params.keys().__contains__('serial'):
+                serial = params['serial']
+
+                with connection.cursor() as cursor:
+                    cursor.execute("EXEC [dbo].[APPS_OBTENER_INFO_DISPOSITIVO_SERVICIO] '{0}'".format(serial))
+                    dispositivo_x_servicio = cursor.fetchone()
+
+                    print(dispositivo_x_servicio)
+
+                    data = {
+                        
+                        'codigo_dispositivo'   : dispositivo_x_servicio[0],
+                        'codigo_servicio'      : dispositivo_x_servicio[1],
+                        'codigo_cliente'       : dispositivo_x_servicio[2],
+                        'codigo_sub_area'      : int(dispositivo_x_servicio[3]),
+                        'nombre_area'          : dispositivo_x_servicio[4],
+                        'nombre_sub_area'      : dispositivo_x_servicio[5],
+                        'nombre_sucursal'      : dispositivo_x_servicio[6],
+                        'nombre_cliente'       : dispositivo_x_servicio[7],
+                        'alias_sede'           : dispositivo_x_servicio[8],
+                        'codigo_tipo_servicio' : int(dispositivo_x_servicio[9]),
+
+                    }
+
+                    return Response(data, status= status.HTTP_200_OK)
+
+                    # relacion_serializer = self.get_serializer(data= data)
+
+                    # if relacion_serializer.is_valid():
+                    #     # data = relacion_serializer.data[0]
+                    #     print(relacion_serializer)
+                    #     # print(data)
+                    #     return Response(relacion_serializer.data, status= status.HTTP_200_OK)
+                    # else:
+                    #     return Response(relacion_serializer.errors, status= status.HTTP_400_BAD_REQUEST)
+
+            else:
+
+                return Response({
+                    'error': 'No se encontro el parametro solicitado'},
+                    status= status.HTTP_400_BAD_REQUEST
+                )
+
+        except:
+                return Response({
+                    'error':dispositivo_x_servicio},
+                    status= status.HTTP_400_BAD_REQUEST
+                )
+
+

@@ -38,6 +38,7 @@ urlpatterns = [
     path('appsol/people/cargos/', include('apps.cargos.api.routers')),
     path('appsol/people/consulta-datos-persona/', include('apps.consulta_datos_persona.api.routers')),
     path('appsol/dispositivo/', include('apps.device.api.routers')),
+    path('appsol/autenticacion/', include('apps.autenticacion.api.routers')),
 
     # URLS THIRD
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),

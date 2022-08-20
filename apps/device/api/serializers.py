@@ -17,9 +17,18 @@ class RegistrarDispositivoSerializer(serializers.Serializer):
     version_api         = serializers.CharField(max_length=50)
 
 
-
 class ConsultarEstadoSerializer(serializers.Serializer):
     estadoId = serializers.DecimalField(max_digits=18, decimal_places=0)
 
 
-
+class RelacionDispositivoServicioSerializer(serializers.Serializer):
+    codigo_dispositivo   = serializers.IntegerField(),
+    codigo_servicio      = serializers.IntegerField(),
+    codigo_cliente       = serializers.CharField(max_length=50),
+    codigo_sub_area      = serializers.IntegerField(),
+    nombre_area          = serializers.CharField(max_length=50),
+    nombre_sub_area      = serializers.CharField(max_length=50),
+    nombre_sucursal      = serializers.CharField(max_length=50),
+    nombre_cliente       = serializers.CharField(max_length=50),
+    alias_sede           = serializers.CharField(max_length=50),
+    codigo_tipo_servicio = serializers.IntegerField(),

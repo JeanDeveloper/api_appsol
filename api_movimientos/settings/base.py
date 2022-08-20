@@ -44,7 +44,9 @@ LOCAL_APPS = [
     'apps.empresas',
     'apps.cargos',
     'apps.consulta_datos_persona',
-    'apps.device'
+    'apps.device',
+    'apps.personal',
+    'apps.autenticacion'
 ]
 
 THIRD_APPS = [
