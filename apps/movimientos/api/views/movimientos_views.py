@@ -1,7 +1,8 @@
 from apps.movimientos.api.serializers.movimiento_serializers import *
-from django.db import connection
+from django.db import connection, connections
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+import re
 
 
 class MovimientosViewSet(viewsets.GenericViewSet):
@@ -11,7 +12,17 @@ class MovimientosViewSet(viewsets.GenericViewSet):
     def list(self, request):
 
         data = []
-        cursor = connection.cursor()
+        conexion = connection.cursor();
+        
+        serviciosHayduk = [
+                        "1065", "1302", "1329", "1394", "1396", "1397", "1400", "1401", "1621", "2420",
+                        "2668", "2760", "2768", "2769", "2770", "2771", "2772", "3116", "3117", "3118",
+                        "3119", "3120", "3121", "3122", "3130", "3174", "3269", "3295", "3296", "3311",
+                        "3336", "3349", "3350", "3357", "3364", "3398", "3400", "3439", "3441", "3444",
+                        "3446", "3456", "3459", "3467", "3471", "3480", "3481", "3498", "3499", "3500",
+                        "3501", "3504", "3506", "3509", "3512", "3536", "3552", "3553", "3558", "3608",
+                        "3611", "3612", "3622", "3630", "3644", "3645", "3655", "3656", "3658", "3659",
+                        "3667", "3678", "3716"]
 
         try:
 
@@ -24,35 +35,37 @@ class MovimientosViewSet(viewsets.GenericViewSet):
                 idServicio = params['idServicio']
                 tipoPersonal = params['tipoPersonal']
 
-                cursor.execute(
-                    "EXEC [dbo].[AppCA_ListadoMovimientosPeople] {0}, {1}, {2} , {3}".format(idServicio, tipoPersonal,
-                                                                                            "''", tipoMovimiento))
+                if(params['idServicio'] in serviciosHayduk):
+                    print('CAMBIANDO EL CURSOR A LA BD DE HAYDUK')
+                    conexion = connections['bd_hayduk'].cursor()
 
-                movimientos_data = cursor.fetchall()
+                with conexion as cursor:
 
-                for movimiento in movimientos_data:
-                    dataTemp = {
-                        'cod_movimiento': movimiento[0],
-                        'nombres': movimiento[1],
-                        'dni': movimiento[2],
-                        'sexo': movimiento[3],
-                        'cargo': movimiento[4],
-                        'empresa': movimiento[5],
-                        'fecha_movimiento': movimiento[6],
-                        'fecha_salida': '' if movimiento[7] is None else movimiento[7],
-                        'tipo_ingreso': movimiento[8],
-                        'tipo_personal': movimiento[9],
-                        'imagen': movimiento[10],
-                    }
+                    cursor.execute("EXEC [dbo].[AppCA_ListadoMovimientosPeople] {0}, {1}, {2} , {3}".format(idServicio, tipoPersonal, "''", tipoMovimiento))
 
-                    data.append(dataTemp)
+                    movimientos_data = cursor.fetchall()
 
-                movimientos_serializer = self.get_serializer(data=data, many=True)
+                    for movimiento in movimientos_data:
+                        dataTemp = {
+                            'cod_movimiento': movimiento[0],
+                            'nombres': movimiento[1],
+                            'dni': movimiento[2],
+                            'sexo': movimiento[3],
+                            'cargo': movimiento[4],
+                            'empresa': movimiento[5],
+                            'fecha_movimiento': movimiento[6],
+                            'fecha_salida': '' if movimiento[7] is None else movimiento[7],
+                            'tipo_ingreso': movimiento[8],
+                            'tipo_personal': movimiento[9],
+                            'imagen': movimiento[10],
+                        }
+                        data.append(dataTemp)
+                    movimientos_serializer = self.get_serializer(data=data, many=True)
 
-                if movimientos_serializer.is_valid():
-                    return Response(movimientos_serializer.data, status=status.HTTP_200_OK)
-                else:
-                    return Response(movimientos_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                    if movimientos_serializer.is_valid():
+                        return Response(movimientos_serializer.data, status=status.HTTP_200_OK)
+                    else:
+                        return Response(movimientos_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
             else:
                 return Response({
@@ -60,7 +73,7 @@ class MovimientosViewSet(viewsets.GenericViewSet):
                 }, status=status.HTTP_400_BAD_REQUEST)
 
         finally:
-            cursor.close()
+            pass
 
     def create(self, request):
         date = datetime.datetime.now()
@@ -77,7 +90,10 @@ class MovimientosViewSet(viewsets.GenericViewSet):
                             request.data['creado_por'], request.data['codigo_area']
             ))
 
+            print(request.data)
+
             movimiento_id = cursor.fetchone()
+
 
             if movimiento_id:
                 return Response({

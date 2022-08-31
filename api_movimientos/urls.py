@@ -6,6 +6,15 @@ from django.views.static import serve
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+
+
+#CODIGO DEL JWT
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
+
 # VARIABLE CREADA PARA EL SWAGGER
 schema_view = get_schema_view(
 
@@ -39,7 +48,9 @@ urlpatterns = [
     path('appsol/people/consulta-datos-persona/', include('apps.consulta_datos_persona.api.routers')),
     path('appsol/dispositivo/', include('apps.device.api.routers')),
     path('appsol/autenticacion/', include('apps.autenticacion.api.routers')),
-
+    # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    
     # URLS THIRD
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

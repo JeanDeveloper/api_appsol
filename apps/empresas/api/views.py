@@ -1,7 +1,7 @@
-from rest_framework.response import Response
-from rest_framework import viewsets, status
 from apps.empresas.api.serializers import *
 from django.db import connection
+from rest_framework import viewsets, status
+from rest_framework.response import Response
 
 
 class EmpresasViewSet(viewsets.GenericViewSet):
@@ -20,8 +20,8 @@ class EmpresasViewSet(viewsets.GenericViewSet):
                 with connection.cursor() as cursor:
 
                     cursor.execute(" EXEC [dbo].[USP_SICOS_2019_BUSCAR_EMPRESAS_S_COMBO_UNIFICACION] '{0}', '-1', '{1}' ".format(nombreEmpresa, codEmpresa))
-
                     empresas_data = cursor.fetchall()
+                    print(empresas_data)
 
                     for empresa in empresas_data:
                         dataTemp = {

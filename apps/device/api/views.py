@@ -13,17 +13,17 @@ class RegistrarDispositivoViewSet(viewsets.GenericViewSet):
 
             cursor.execute(
                 "DECLARE @result VARCHAR(500), @codigo NUMERIC(18,0), @estado SMALLINT; "
-                "EXECUTE @result = [dbo].[APPS_INSERTAR_DISPOSITIVOS] '{0}', '{1}', '{2}', '{3}', {4}, '{5}', '{6}', '{7}', '{8}', '{9}', @estado_transaccion=@estado OUTPUT, @codigo_dispositivo_creado=@codigo OUTPUT "
+                "EXECUTE @result = [dbo].[APPS_INSERTAR_DISPOSITIVOS] '{0}', '{1}', '{2}', '{3}', {4}, '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', @estado_transaccion=@estado OUTPUT, @codigo_dispositivo_creado=@codigo OUTPUT "
                 "SELECT  @estado AS 'estado', @codigo as 'codigo'".format(
                     request.data['serial'], request.data['hardware'], request.data['modelo'], 
                     request.data['fabricante'], request.data['version_api'], request.data['numero'],
                     request.data['sdk'], request.data['incremental'], request.data['dispositivo'], 
-                    request.data['id']
+                    request.data['id'], request.data['id_fb'],
                 )
             )
 
             dispositivo_data = cursor.fetchone()
-            print(dispositivo_data)
+            # print(dispositivo_data)
             if dispositivo_data[0] == 1:
 
                 return Response({
@@ -95,10 +95,9 @@ class RelacionDispositivoServicioViewSet(viewsets.GenericViewSet):
                     cursor.execute("EXEC [dbo].[APPS_OBTENER_INFO_DISPOSITIVO_SERVICIO] '{0}'".format(serial))
                     dispositivo_x_servicio = cursor.fetchone()
 
-                    print(dispositivo_x_servicio)
-
+                    print()
                     data = {
-                        
+
                         'codigo_dispositivo'   : dispositivo_x_servicio[0],
                         'codigo_servicio'      : dispositivo_x_servicio[1],
                         'codigo_cliente'       : dispositivo_x_servicio[2],
@@ -114,16 +113,6 @@ class RelacionDispositivoServicioViewSet(viewsets.GenericViewSet):
 
                     return Response(data, status= status.HTTP_200_OK)
 
-                    # relacion_serializer = self.get_serializer(data= data)
-
-                    # if relacion_serializer.is_valid():
-                    #     # data = relacion_serializer.data[0]
-                    #     print(relacion_serializer)
-                    #     # print(data)
-                    #     return Response(relacion_serializer.data, status= status.HTTP_200_OK)
-                    # else:
-                    #     return Response(relacion_serializer.errors, status= status.HTTP_400_BAD_REQUEST)
-
             else:
 
                 return Response({
@@ -136,5 +125,4 @@ class RelacionDispositivoServicioViewSet(viewsets.GenericViewSet):
                     'error':dispositivo_x_servicio},
                     status= status.HTTP_400_BAD_REQUEST
                 )
-
 
