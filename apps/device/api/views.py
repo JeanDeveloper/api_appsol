@@ -95,9 +95,9 @@ class RelacionDispositivoServicioViewSet(viewsets.GenericViewSet):
                     cursor.execute("EXEC [dbo].[APPS_OBTENER_INFO_DISPOSITIVO_SERVICIO] '{0}'".format(serial))
                     dispositivo_x_servicio = cursor.fetchone()
 
-                    print()
-                    data = {
+                    print(dispositivo_x_servicio)
 
+                    data = {
                         'codigo_dispositivo'   : dispositivo_x_servicio[0],
                         'codigo_servicio'      : dispositivo_x_servicio[1],
                         'codigo_cliente'       : dispositivo_x_servicio[2],
@@ -108,7 +108,6 @@ class RelacionDispositivoServicioViewSet(viewsets.GenericViewSet):
                         'nombre_cliente'       : dispositivo_x_servicio[7],
                         'alias_sede'           : dispositivo_x_servicio[8],
                         'codigo_tipo_servicio' : int(dispositivo_x_servicio[9]),
-
                     }
 
                     return Response(data, status= status.HTTP_200_OK)
@@ -120,9 +119,9 @@ class RelacionDispositivoServicioViewSet(viewsets.GenericViewSet):
                     status= status.HTTP_400_BAD_REQUEST
                 )
 
-        except:
+        except NameError:
                 return Response({
-                    'error':dispositivo_x_servicio},
+                    'error':NameError},
                     status= status.HTTP_400_BAD_REQUEST
                 )
 

@@ -1,6 +1,6 @@
-import datetime
-
+from email.policy import default
 from rest_framework import serializers
+import datetime
 
 class MovimientosListSerializer(serializers.Serializer):
     cod_movimiento = serializers.DecimalField(max_digits=18, decimal_places=0)
@@ -11,7 +11,8 @@ class MovimientosListSerializer(serializers.Serializer):
     empresa = serializers.CharField(max_length=100)
     fecha_movimiento = serializers.DateTimeField()
     fecha_salida = serializers.CharField(allow_null=True, allow_blank=True)
-    tipo_ingreso = serializers.CharField(max_length=50, allow_blank=True)
+    # fecha_salida = serializers.DateTimeField(input_formats=['', 'YYYY-MM-DDThh:mm[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z]'], format=['', 'YYYY-MM-DDThh:mm[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z]'], required=False, allow_null = True)
+    # tipo_ingreso = serializers.CharField(max_length=50, allow_blank=True)
     tipo_personal = serializers.CharField(max_length=50)
     imagen = serializers.CharField(max_length=255)
 

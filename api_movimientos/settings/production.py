@@ -4,8 +4,7 @@ from .base import *
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['159.203.105.103', 'http://159.203.105.103' ]
-
+ALLOWED_HOSTS = ['20.168.13.107', 'http://20.168.13.107' ]
 
 DATABASES = {
 

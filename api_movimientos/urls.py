@@ -1,10 +1,10 @@
-from django.contrib import admin
-from rest_framework import permissions
-from django.urls import path, include, re_path
 from django.conf import settings
+from django.contrib import admin
+from django.urls import path, include, re_path
 from django.views.static import serve
-from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from rest_framework import permissions
 
 
 
@@ -32,11 +32,10 @@ schema_view = get_schema_view(
 
 )
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # URL APP
+    # URL APP PEOPLE
     path('appsol/people/movimientos/', include('apps.movimientos.api.routers')),
     path('appsol/people/autorizantes/', include('apps.autorizantes.api.routers')),
     path('appsol/people/motivos/', include('apps.motivos.api.routers')),
@@ -46,11 +45,20 @@ urlpatterns = [
     path('appsol/people/empresas/', include('apps.empresas.api.routers')),
     path('appsol/people/cargos/', include('apps.cargos.api.routers')),
     path('appsol/people/consulta-datos-persona/', include('apps.consulta_datos_persona.api.routers')),
+
+    # URL APP CARGO
+    path('appsol/cargo/movimientos/', include('apps.movimientos_cargo.api.routers')),
+    path('appsol/cargo/carga/', include('apps.tipos_carga.api.routers')),
+
+
+
+    #URLS GENERALES
     path('appsol/dispositivo/', include('apps.device.api.routers')),
     path('appsol/autenticacion/', include('apps.autenticacion.api.routers')),
+
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    
+
     # URLS THIRD
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
