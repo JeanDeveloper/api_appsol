@@ -9,10 +9,10 @@ from rest_framework import permissions
 
 
 #CODIGO DEL JWT
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+# from rest_framework_simplejwt.views import (
+#     TokenObtainPairView,
+#     TokenRefreshView,
+# )
 
 
 # VARIABLE CREADA PARA EL SWAGGER

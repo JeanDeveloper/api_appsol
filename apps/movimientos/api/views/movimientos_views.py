@@ -146,7 +146,7 @@ class MovimientosViewSet(viewsets.GenericViewSet):
                         return Response({
                             'message': 'hubo un error al momento de crear un movimiento'
                         }, status=status.HTTP_400_BAD_REQUEST)
-            else:
+            else:   
 
                 with connection.cursor() as cursor:
                     print('creacion de movimiento para el multicontrol')
