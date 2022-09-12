@@ -151,16 +151,19 @@ class MovimientosViewSet(viewsets.GenericViewSet):
                 with connection.cursor() as cursor:
                     print('creacion de movimiento para el multicontrol')
 
-                    cursor.execute( "DECLARE @result SMALLINT, @result1 SMALLINT;"
-                                    "EXECUTE @result = [dbo].[USP_SICOS_2014_INSERTAR_MOVIMIENTO_PEATONAL_2019_I_UNIFICACION]"
-                                    " 0, {0}, {1}, {2}, {3}, {4}, 0, 0, {5}, \" \", '', 0, '', 0,'N', '{6}', 1, -1, '', '', '', {7}, '00', 0, 0," 
-                                    "@estado_transaccion=@result1 OUTPUT "
-                                    "select @result1 as RESULTADO".format(
-                                    request.data['codigo_personal'], request.data['codigo_servicio'], request.data['codigo_tipo_movimiento'],
-                                    request.data['codigo_tipo_motivo'], request.data['codigo_empresa'], request.data['autorizado_por'],
-                                    request.data['creado_por'], request.data['codigo_area']
+                    cursor.execute( 
+                        "DECLARE @result SMALLINT, @result1 SMALLINT;"
+                        "EXECUTE @result = [dbo].[APPS_CREAR_MOVIMIENTO]"
+                        " 0, {0}, {1}, {2}, {3}, {4}, 0, 0, {5}, \" \", '', 0, '', 0,'N', '{6}', 1, -1, '', '', '', {7}, '00', 0, 0, '{8}', '{9}', '{10}', '{11}', " 
+                        "@estado_transaccion=@result1 OUTPUT "
+                        "select @result1 as RESULTADO".format(
+                        request.data['codigo_personal'], request.data['codigo_servicio'], request.data['codigo_tipo_movimiento'],
+                        request.data['codigo_tipo_motivo'], request.data['codigo_empresa'], request.data['autorizado_por'],
+                        request.data['creado_por'], request.data['codigo_area'], request.data['guia'], request.data['url_foto_guia'], 
+                        request.data['material'], request.data['url_foto_material'],
                     ))
                     movimiento_id = cursor.fetchone()
+                    print(movimiento_id)
 
                     if movimiento_id:
                         return Response({

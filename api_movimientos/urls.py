@@ -45,12 +45,11 @@ urlpatterns = [
     path('appsol/people/empresas/', include('apps.empresas.api.routers')),
     path('appsol/people/cargos/', include('apps.cargos.api.routers')),
     path('appsol/people/consulta-datos-persona/', include('apps.consulta_datos_persona.api.routers')),
+    path('appsol/people/datos_acceso/', include('apps.datos_acceso.api.routers')),
 
     # URL APP CARGO
     path('appsol/cargo/movimientos/', include('apps.movimientos_cargo.api.routers')),
     path('appsol/cargo/carga/', include('apps.tipos_carga.api.routers')),
-
-
 
     #URLS GENERALES
     path('appsol/dispositivo/', include('apps.device.api.routers')),
