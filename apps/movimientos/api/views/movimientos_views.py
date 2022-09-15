@@ -34,8 +34,7 @@ class MovimientosViewSet(viewsets.GenericViewSet):
 
             params = self.request.query_params.dict()
 
-            if params.keys().__contains__('tipoMovimiento') & params.keys().__contains__(
-                    'idServicio') & params.keys().__contains__('tipoPersonal'):
+            if params.keys().__contains__('tipoMovimiento') & params.keys().__contains__('idServicio') & params.keys().__contains__('tipoPersonal'):
                 tipoMovimiento = params['tipoMovimiento']
                 idServicio     = params['idServicio']
                 tipoPersonal   = params['tipoPersonal']
@@ -151,6 +150,11 @@ class MovimientosViewSet(viewsets.GenericViewSet):
                 with connection.cursor() as cursor:
                     print('creacion de movimiento para el multicontrol')
 
+                    print(request.data['guia'])
+                    print(request.data['url_foto_guia'])
+                    print(request.data['material'])
+                    print(request.data['url_foto_material'])
+
                     cursor.execute( 
                         "DECLARE @result SMALLINT, @result1 SMALLINT;"
                         "EXECUTE @result = [dbo].[APPS_CREAR_MOVIMIENTO]"
@@ -161,9 +165,9 @@ class MovimientosViewSet(viewsets.GenericViewSet):
                         request.data['codigo_tipo_motivo'], request.data['codigo_empresa'], request.data['autorizado_por'],
                         request.data['creado_por'], request.data['codigo_area'], request.data['guia'], request.data['url_foto_guia'], 
                         request.data['material'], request.data['url_foto_material'],
-                    ))
+                        )
+                    )
                     movimiento_id = cursor.fetchone()
-                    print(movimiento_id)
 
                     if movimiento_id:
                         return Response({

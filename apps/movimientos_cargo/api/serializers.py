@@ -9,7 +9,7 @@ class MovimientosCargoSerializer(serializers.Serializer):
     dni             = serializers.CharField(max_length=25,  allow_null=True, allow_blank=True)
     cargo           = serializers.CharField(max_length=100,  allow_null=True, allow_blank=True)
     empresa         = serializers.CharField(max_length=100,  allow_null=True, allow_blank=True)
-    fecha           = serializers.DateTimeField(allow_null = True)
+    fecha_ingreso   = serializers.DateTimeField(allow_null = True)
     fecha_salida    = serializers.CharField(allow_null=True, allow_blank=True)
 
     # fecha_salida    = serializers.DateTimeField(allow_null = True)

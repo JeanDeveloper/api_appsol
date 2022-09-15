@@ -12,16 +12,14 @@ class MovimientosCargoViewSet(viewsets.GenericViewSet):
         try:
             params =  self.request.query_params.dict()
 
-            if params.keys().__contains__('codTipoCarga') & params.keys().__contains__('codServicio') & params.keys().__contains__('datoBuscar') & params.keys().__contains__('tipoConsulta') :
+            if params.keys().__contains__('codTipoCarga') & params.keys().__contains__('codServicio') & params.keys().__contains__('tipoConsulta') :
 
                 codTipoCarga = params['codTipoCarga']
                 codServicio  = params['codServicio']
-                datoBuscar   = params['datoBuscar']
                 tipoConsulta = params['tipoConsulta']
 
                 with connection.cursor() as cursor:
-                    cursor.execute("EXEC [dbo].[AppCA_ListadoMovimientosCargo] {0}, {1}, '{2}', '{3}' ".format(
-                        codServicio, codTipoCarga, datoBuscar, tipoConsulta))
+                    cursor.execute("EXEC [dbo].[AppCA_ListadoMovimientosCargo] {0}, {1}, '', '{2}' ".format(codServicio, codTipoCarga, tipoConsulta))
                     movimientos_data = cursor.fetchall()
 
                     for movimiento in movimientos_data:
@@ -34,9 +32,10 @@ class MovimientosCargoViewSet(viewsets.GenericViewSet):
                             'dni': movimiento[5],
                             'cargo': movimiento[6],
                             'empresa': '' if movimiento[7] is None else movimiento[7],
-                            'fecha': movimiento[8],
+                            'fecha_ingreso': movimiento[8],
                             'fecha_salida': movimiento[9],
                         }
+
                         data.append(dataTemp)
                     movimientos_serializer = self.get_serializer( data=data, many=True )
                     if movimientos_serializer.is_valid():
