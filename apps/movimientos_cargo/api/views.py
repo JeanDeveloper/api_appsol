@@ -19,21 +19,23 @@ class MovimientosCargoViewSet(viewsets.GenericViewSet):
                 tipoConsulta = params['tipoConsulta']
 
                 with connection.cursor() as cursor:
-                    cursor.execute("EXEC [dbo].[AppCA_ListadoMovimientosCargo] {0}, {1}, '', '{2}' ".format(codServicio, codTipoCarga, tipoConsulta))
+                    cursor.execute("EXEC [dbo].[AppCA_ListadoMovimientosCargoQA] {0}, {1}, '', '{2}' ".format(codServicio, codTipoCarga, tipoConsulta))
                     movimientos_data = cursor.fetchall()
+
 
                     for movimiento in movimientos_data:
                         dataTemp = {
                             'cod_movimiento': movimiento[0],
                             'codigo_vehicular': movimiento[1],
                             'placa': movimiento[2],
-                            'tipo_carga': movimiento[3],
-                            'nombres': movimiento[4],
-                            'dni': movimiento[5],
-                            'cargo': movimiento[6],
-                            'empresa': '' if movimiento[7] is None else movimiento[7],
-                            'fecha_ingreso': movimiento[8],
-                            'fecha_salida': movimiento[9],
+                            'cod_tipo_carga': movimiento[3],
+                            'tipo_carga': movimiento[4],
+                            'nombres': movimiento[5],
+                            'dni': movimiento[6],
+                            'cargo': movimiento[7],
+                            'empresa': '' if movimiento[8] is None else movimiento[8],
+                            'fecha_ingreso': movimiento[9],
+                            'fecha_salida': movimiento[10],
                         }
 
                         data.append(dataTemp)

@@ -1,9 +1,11 @@
+from unittest.util import _MAX_LENGTH
 from rest_framework import serializers
 
 class MovimientosCargoSerializer(serializers.Serializer):
     cod_movimiento  = serializers.DecimalField(max_digits=18, decimal_places=0)
     codigo_vehicular= serializers.DecimalField(max_digits=18, decimal_places=0)
     placa           = serializers.CharField(max_length=20)
+    cod_tipo_carga  = serializers.CharField(max_length=100, allow_null=True, allow_blank=True)
     tipo_carga      = serializers.CharField(max_length=100, allow_null=True, allow_blank=True)
     nombres         = serializers.CharField(max_length=255, allow_null=True, allow_blank=True)
     dni             = serializers.CharField(max_length=25,  allow_null=True, allow_blank=True)

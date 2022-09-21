@@ -95,7 +95,7 @@ class RelacionDispositivoServicioViewSet(viewsets.GenericViewSet):
                     cursor.execute("EXEC [dbo].[APPS_OBTENER_INFO_DISPOSITIVO_SERVICIO] '{0}'".format(serial))
                     dispositivo_x_servicio = cursor.fetchone()
 
-                    print(dispositivo_x_servicio)
+                    
 
                     data = {
                         'codigo_dispositivo'   : dispositivo_x_servicio[0],

@@ -50,6 +50,8 @@ urlpatterns = [
     # URL APP CARGO
     path('appsol/cargo/movimientos/', include('apps.movimientos_cargo.api.routers')),
     path('appsol/cargo/carga/', include('apps.tipos_carga.api.routers')),
+    path('appsol/cargo/vehiculo/', include('apps.consulta_vehiculo.api.routers')),
+
 
     #URLS GENERALES
     path('appsol/dispositivo/', include('apps.device.api.routers')),
