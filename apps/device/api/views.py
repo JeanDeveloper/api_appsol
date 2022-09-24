@@ -1,5 +1,5 @@
 from apps.device.api.serializers import *
-from django.db import connection
+from django.db import connections
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
@@ -9,7 +9,9 @@ class RegistrarDispositivoViewSet(viewsets.GenericViewSet):
 
     def create(self, request):
 
-        with connection.cursor() as cursor:
+        with connections['test_solmar'].cursor() as cursor:
+
+            print()
 
             cursor.execute(
                 "DECLARE @result VARCHAR(500), @codigo NUMERIC(18,0), @estado SMALLINT; "
@@ -23,7 +25,7 @@ class RegistrarDispositivoViewSet(viewsets.GenericViewSet):
             )
 
             dispositivo_data = cursor.fetchone()
-            # print(dispositivo_data)
+
             if dispositivo_data[0] == 1:
 
                 return Response({
@@ -33,25 +35,32 @@ class RegistrarDispositivoViewSet(viewsets.GenericViewSet):
                 }, status=status.HTTP_201_CREATED)
 
             elif dispositivo_data[0] == 2:
-
                 return Response({
                     'estado' : dispositivo_data[0],
                     'message': 'El dispositivo se encuentra registrado, pero no esta habilitado',
                     'id_dispositivo': int(dispositivo_data[1])
                 }, status=status.HTTP_403_FORBIDDEN)
+
             elif dispositivo_data[0] == 3:
                 return Response({
                     'estado' : dispositivo_data[0],
                     'message': 'El dispositivo ya se encuentra registrado y esta habilitado',
                     'id_dispositivo': int(dispositivo_data[1])
                 }, status=status.HTTP_403_FORBIDDEN)
+
+            elif dispositivo_data[0] == 4:
+                return Response({
+                    'estado' : dispositivo_data[0],
+                    'message': 'El numero ya se encuentra registrado',
+                    'id_dispositivo': int(dispositivo_data[1])
+                }, status = status.HTTP_403_FORBIDDEN)
+
             else:
                 return Response({
                     'estado' : dispositivo_data[0],
                     'message': 'El dispositivo no se ha podido crear',
                     'id_dispositivo': -1
                 }, status=status.HTTP_400_BAD_REQUEST)
-
 
 class ConsultarEstadoViewSet(viewsets.GenericViewSet):
 
@@ -61,7 +70,7 @@ class ConsultarEstadoViewSet(viewsets.GenericViewSet):
             params = self.request.query_params.dict()
             
             if params.keys().__contains__('serial'):
-                with connection.cursor() as cursor:
+                with connections['test_solmar'].cursor() as cursor:
                     serialNumber = params['serial']
                     cursor.execute( 
                         "DECLARE @result SMALLINT, @state SMALLINT;" 
@@ -91,11 +100,11 @@ class RelacionDispositivoServicioViewSet(viewsets.GenericViewSet):
             if params.keys().__contains__('serial'):
                 serial = params['serial']
 
-                with connection.cursor() as cursor:
+                with connections['test_solmar'].cursor() as cursor:
                     cursor.execute("EXEC [dbo].[APPS_OBTENER_INFO_DISPOSITIVO_SERVICIO] '{0}'".format(serial))
                     dispositivo_x_servicio = cursor.fetchone()
 
-                    
+                    print(dispositivo_x_servicio)
 
                     data = {
                         'codigo_dispositivo'   : dispositivo_x_servicio[0],
@@ -108,6 +117,7 @@ class RelacionDispositivoServicioViewSet(viewsets.GenericViewSet):
                         'nombre_cliente'       : dispositivo_x_servicio[7],
                         'alias_sede'           : dispositivo_x_servicio[8],
                         'codigo_tipo_servicio' : int(dispositivo_x_servicio[9]),
+                        'nombre_puesto'        : dispositivo_x_servicio[10],
                     }
 
                     return Response(data, status= status.HTTP_200_OK)
@@ -124,4 +134,3 @@ class RelacionDispositivoServicioViewSet(viewsets.GenericViewSet):
                     'error':NameError},
                     status= status.HTTP_400_BAD_REQUEST
                 )
-

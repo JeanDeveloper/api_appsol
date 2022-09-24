@@ -32,3 +32,4 @@ class RelacionDispositivoServicioSerializer(serializers.Serializer):
     nombre_cliente       = serializers.CharField(max_length=50),
     alias_sede           = serializers.CharField(max_length=50),
     codigo_tipo_servicio = serializers.IntegerField(),
+    nombre_puesto        = serializers.CharField(max_length=255, allow_null = True, allow_blank = True)

@@ -3,7 +3,6 @@ from django.db import connection, connections
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
-
 class ConsultaDatosPersonaViewSet(viewsets.GenericViewSet):
     serializer_class = ConsultaDatosPersonaSerializer
 

@@ -72,7 +72,7 @@ class VerificarVehiculoViewSet(viewsets.GenericViewSet):
 
         try:
             params = self.request.query_params.dict()
-            
+
             if params.keys().__contains__('codServicio') & params.keys().__contains__('codVehiculo'):
 
                 codServicio = params['codServicio']
@@ -108,6 +108,3 @@ class VerificarVehiculoViewSet(viewsets.GenericViewSet):
             return Response({
                 'error': NameError
             }, status=status.HTTP_400_BAD_REQUEST)
-
-
-
