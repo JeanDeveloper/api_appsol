@@ -56,6 +56,8 @@ urlpatterns = [
     #URLS GENERALES
     path('appsol/dispositivo/', include('apps.device.api.routers')),
     path('appsol/autenticacion/', include('apps.autenticacion.api.routers')),
+    path('appsol/usuario/', include('apps.usuario.api.routers')),
+    
 
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

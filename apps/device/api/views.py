@@ -11,8 +11,6 @@ class RegistrarDispositivoViewSet(viewsets.GenericViewSet):
 
         with connections['test_solmar'].cursor() as cursor:
 
-            print()
-
             cursor.execute(
                 "DECLARE @result VARCHAR(500), @codigo NUMERIC(18,0), @estado SMALLINT; "
                 "EXECUTE @result = [dbo].[APPS_INSERTAR_DISPOSITIVOS] '{0}', '{1}', '{2}', '{3}', {4}, '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', @estado_transaccion=@estado OUTPUT, @codigo_dispositivo_creado=@codigo OUTPUT "
@@ -27,10 +25,9 @@ class RegistrarDispositivoViewSet(viewsets.GenericViewSet):
             dispositivo_data = cursor.fetchone()
 
             if dispositivo_data[0] == 1:
-
                 return Response({
                     'estado' : dispositivo_data[0],
-                    'message': 'El dispositivo fue creado satisfactoriamente',
+                    'message': 'El dispositivo fue registrado satisfactoriamente',
                     'id_dispositivo': int(dispositivo_data[1])
                 }, status=status.HTTP_201_CREATED)
 
@@ -44,7 +41,7 @@ class RegistrarDispositivoViewSet(viewsets.GenericViewSet):
             elif dispositivo_data[0] == 3:
                 return Response({
                     'estado' : dispositivo_data[0],
-                    'message': 'El dispositivo ya se encuentra registrado y esta habilitado',
+                    'message': 'El dispositivo se encuentra registrado y esta habilitado',
                     'id_dispositivo': int(dispositivo_data[1])
                 }, status=status.HTTP_403_FORBIDDEN)
 
@@ -58,13 +55,14 @@ class RegistrarDispositivoViewSet(viewsets.GenericViewSet):
             else:
                 return Response({
                     'estado' : dispositivo_data[0],
-                    'message': 'El dispositivo no se ha podido crear',
+                    'message': 'El dispositivo no se ha podido registrar',
                     'id_dispositivo': -1
                 }, status=status.HTTP_400_BAD_REQUEST)
 
 class ConsultarEstadoViewSet(viewsets.GenericViewSet):
 
     serializer_class = ConsultarEstadoSerializer
+
     def list(self, request):
         try:
             params = self.request.query_params.dict()
@@ -77,9 +75,9 @@ class ConsultarEstadoViewSet(viewsets.GenericViewSet):
                         "EXECUTE @result = [dbo].[APPS_VERIFICAR_ESTADO_DISPOSITIVO] '{0}',@estado=@state OUTPUT "
                         "SELECT  @state AS 'estado';".format(serialNumber)
                     )
+
                     estado = cursor.fetchone()
-                    print(estado[0])
-                    
+
                     return Response({
                         'estado': estado[0]
                     },status= status.HTTP_200_OK)
@@ -91,9 +89,11 @@ class ConsultarEstadoViewSet(viewsets.GenericViewSet):
             pass
 
 class RelacionDispositivoServicioViewSet(viewsets.GenericViewSet):
+
     serializer_class = RelacionDispositivoServicioSerializer
 
     def list(self, request):
+
         try:
             params = self.request.query_params.dict()
 
@@ -103,8 +103,6 @@ class RelacionDispositivoServicioViewSet(viewsets.GenericViewSet):
                 with connections['test_solmar'].cursor() as cursor:
                     cursor.execute("EXEC [dbo].[APPS_OBTENER_INFO_DISPOSITIVO_SERVICIO] '{0}'".format(serial))
                     dispositivo_x_servicio = cursor.fetchone()
-
-                    print(dispositivo_x_servicio)
 
                     data = {
                         'codigo_dispositivo'   : dispositivo_x_servicio[0],

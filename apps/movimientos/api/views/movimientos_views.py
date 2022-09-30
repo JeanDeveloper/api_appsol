@@ -19,7 +19,8 @@ class MovimientosViewSet(viewsets.GenericViewSet):
             "3446", "3456", "3459", "3467", "3471", "3480", "3481", "3498", "3499", "3500",
             "3501", "3504", "3506", "3509", "3512", "3536", "3552", "3553", "3558", "3608",
             "3611", "3612", "3622", "3630", "3644", "3645", "3655", "3656", "3658", "3659",
-            "3667", "3678", "3716"]
+            "3667", "3678", "3716"
+        ]
 
         serviciosTasa = [
             "1500", "1501", "1502", "1503", "1504", "1505", "1506", "1512", "1513", "2016", 
@@ -149,7 +150,6 @@ class MovimientosViewSet(viewsets.GenericViewSet):
 
                 with connection.cursor() as cursor:
                     print('creacion de movimiento para el multicontrol')
-
                     print(request.data['guia'])
                     print(request.data['url_foto_guia'])
                     print(request.data['material'])
