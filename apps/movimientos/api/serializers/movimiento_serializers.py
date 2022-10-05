@@ -5,15 +5,15 @@ import datetime
 class MovimientosListSerializer(serializers.Serializer):
     cod_movimiento = serializers.DecimalField(max_digits=18, decimal_places=0)
     nombres = serializers.CharField(max_length=100, allow_null=True, allow_blank=True)
-    dni = serializers.CharField(max_length=25)
-    sexo = serializers.CharField(max_length=1)
-    cargo = serializers.CharField(max_length=100, allow_blank=True)
-    empresa = serializers.CharField(max_length=100)
+    dni = serializers.CharField(max_length=25, allow_null=True, allow_blank=True)
+    sexo = serializers.CharField(max_length=1, allow_null=True, allow_blank=True)
+    cargo = serializers.CharField(max_length=100, allow_blank=True, allow_null=True)
+    empresa = serializers.CharField(max_length=100, allow_null=True, allow_blank=True)
     fecha_movimiento = serializers.DateTimeField()
     fecha_salida = serializers.CharField(allow_null=True, allow_blank=True)
     # fecha_salida = serializers.DateTimeField(input_formats=['', 'YYYY-MM-DDThh:mm[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z]'], format=['', 'YYYY-MM-DDThh:mm[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z]'], required=False, allow_null = True)
     # tipo_ingreso = serializers.CharField(max_length=50, allow_blank=True)
-    tipo_personal = serializers.CharField(max_length=50)
+    tipo_personal = serializers.CharField(max_length=50, allow_blank=True, allow_null=True)
     imagen = serializers.CharField(max_length=255)
 
     class Meta:

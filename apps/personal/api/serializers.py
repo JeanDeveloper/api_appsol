@@ -22,3 +22,7 @@ class PersonalSerializer(serializers.Serializer):
     codigo_cliente_control = serializers.CharField(max_length=5, allow_null=True, allow_blank=True)
     # estado_transaccion = serializers.DecimalField(max_digits=2, decimal_places=0, allow_null=True)
     # codigo_personal_creado = serializers.DecimalField(max_digits=2, decimal_places=0, allow_null=True)
+
+class TiposPersonalSerializer(serializers.Serializer):
+    codigo    = serializers.DecimalField(max_digits=18, decimal_places=0)
+    personal   = serializers.CharField(max_length=50, allow_null=True, allow_blank=True)

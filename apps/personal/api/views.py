@@ -140,6 +140,48 @@ class PersonalViewSet(viewsets.GenericViewSet):
 
                         }, status=status.HTTP_403_FORBIDDEN)
 
+class TipoPersonalViewSet(viewsets.GenericViewSet):
+    serializer_class = TiposPersonalSerializer
+
+    def list(self, request):
+
+        data = []
+
+        try:
+            params = self.request.query_params.dict()
+
+            if params.keys().__contains__('codCliente'):
+                codCliente = params['codCliente']
+
+                with connection.cursor() as cursor:
+                    # print('buscar en el multicontrol')
+                    cursor.execute(" EXEC [USP_SICOS_2014_LISTAR_TIPOS_PERSONAL_S_UNIFICACION] '{0}' ".format(codCliente))
+                    tipos_persona = cursor.fetchall()
+
+                    for tiposPersona in tipos_persona:
+                        dataTemp = {
+                            'codigo': tiposPersona[0],
+                            'personal' : tiposPersona[1]
+                        }
+
+                        data.append(dataTemp)
+                    tipoPersona_serializer = self.get_serializer( data= data, many=True)
+
+                    if tipoPersona_serializer.is_valid():
+                        return Response(tipoPersona_serializer.data, status = status.HTTP_200_OK)
+                    else:
+                        return  Response(tipoPersona_serializer.errors, status= status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({
+                    'error': 'Por favor ingrese el parametro requerido'
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+        finally:
+            pass
+
+
     # # def create(self, request):
 
     #     serializer = PersonalSerializer(data=request.data)
