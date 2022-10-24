@@ -149,25 +149,22 @@ class MovimientosViewSet(viewsets.GenericViewSet):
             else:   
 
                 with connection.cursor() as cursor:
-                    print('creacion de movimiento para el multicontrol')
-                    print(request.data['guia'])
-                    print(request.data['url_foto_guia'])
-                    print(request.data['material'])
-                    print(request.data['url_foto_material'])
 
                     cursor.execute( 
                         "DECLARE @result SMALLINT, @result1 SMALLINT;"
                         "EXECUTE @result = [dbo].[APPS_CREAR_MOVIMIENTO]"
                         " 0, {0}, {1}, {2}, {3}, {4}, 0, 0, {5}, \" \", '', 0, '', 0,'N', '{6}', 1, -1, '', '', '', {7}, '00', 0, 0, '{8}', '{9}', '{10}', '{11}', " 
-                        "@estado_transaccion=@result1 OUTPUT "
+                        "@estado_transaccion=@result1 OUTPUT;  "
                         "select @result1 as RESULTADO".format(
                         request.data['codigo_personal'], request.data['codigo_servicio'], request.data['codigo_tipo_movimiento'],
                         request.data['codigo_tipo_motivo'], request.data['codigo_empresa'], request.data['autorizado_por'],
                         request.data['creado_por'], request.data['codigo_area'], request.data['guia'], request.data['url_foto_guia'], 
                         request.data['material'], request.data['url_foto_material'],
-                        )
+                        )   
                     )
+
                     movimiento_id = cursor.fetchone()
+                    print(movimiento_id);
 
                     if movimiento_id:
                         return Response({
@@ -178,3 +175,37 @@ class MovimientosViewSet(viewsets.GenericViewSet):
                         return Response({
                             'message': 'hubo un error al momento de crear un movimiento'
                         }, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UltimoMovimientoViewSet(viewsets.GenericViewSet):
+
+    def list(self, request):
+        
+
+        try:
+
+            params = self.request.query_params.dict()
+
+            if params.keys().__contains__('codServicio') & params.keys().__contains__('codPersonal'):
+                
+                codServicio  = params['codServicio']
+                codPersonal  = params['codPersonal']
+
+                with connection.cursor() as cursor:
+                    cursor.execute ( "EXEC [dbo].[APPS_OBTENER_DATOS_ULTIMO_MOVIMIENTO] {0}, {1}".format(codServicio, codPersonal)  )
+
+                    codigo_movimiento = cursor.fetchone();
+
+                    print(codigo_movimiento);
+
+                    if codigo_movimiento:
+                        return Response({
+                            'codigo_movimiento': int(codigo_movimiento[0])
+                        }, status=status.HTTP_201_CREATED)
+                    else:
+                        return Response({
+                            'message': 'hubo un error al momento de obtener el ultimo movimiento'
+                        }, status=status.HTTP_400_BAD_REQUEST)
+
+        finally:
+            pass

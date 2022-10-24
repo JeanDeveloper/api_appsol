@@ -51,7 +51,6 @@ class DetallePersonaViewSet(viewsets.GenericViewSet):
                         with connections['bd_hayduk'].cursor() as cursor:
                             cursor.execute("EXEC [dbo].[AppCA_DETALLE_PERSONAL] '{0}', {1}".format(documento, idServicio))
                             detalle_persona_data = cursor.fetchall()
-                            # print(detalle_persona_data)
 
                             if detalle_persona_data:
                                 for detalle in detalle_persona_data:
@@ -168,7 +167,7 @@ class DetallePersonaViewSet(viewsets.GenericViewSet):
                                     idServicio
                                 ))
                                 detalle_per_data = cursor.fetchall()
-                                print(detalle_per_data)
+                                # print(detalle_per_data)
 
                                 if detalle_per_data:
 

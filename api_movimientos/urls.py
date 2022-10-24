@@ -46,6 +46,8 @@ urlpatterns = [
     path('appsol/people/cargos/', include('apps.cargos.api.routers')),
     path('appsol/people/consulta-datos-persona/', include('apps.consulta_datos_persona.api.routers')),
     path('appsol/people/datos_acceso/', include('apps.datos_acceso.api.routers')),
+    path('appsol/people/fotos_acceso/', include('apps.fotos_acceso.api.routers')),
+
 
     # URL APP CARGO
     path('appsol/cargo/movimientos/', include('apps.movimientos_cargo.api.routers')),
