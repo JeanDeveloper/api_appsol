@@ -9,5 +9,3 @@ class FotosAccesoSerializer(serializers.Serializer):
     fecha_creacion = serializers.DateTimeField()
     creado_por  = serializers.CharField(max_length=100, allow_blank=True, allow_null=True)
     ubicacion = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
-
-

@@ -7,7 +7,11 @@ class PersonalViewSet(viewsets.GenericViewSet):
 
     def create(self, request):
 
+        print('lo que me llega')
+
         print(request.data)
+
+
 
         if (request.data['codigo_cliente_control'] == '00005'):
             with connections['bd_hayduk']. cursor() as cursor:
@@ -86,13 +90,9 @@ class PersonalViewSet(viewsets.GenericViewSet):
                         )
                     else:
                         return Response({
-
                             'message': 'El documento ya se encuentra registrado',
                             'personal_maestro': -1
-
                         }, status=status.HTTP_403_FORBIDDEN)
-
-
 
             else:
 
@@ -112,6 +112,7 @@ class PersonalViewSet(viewsets.GenericViewSet):
                         request.data['codigo_cliente_control']
                     ))
                     result_data = cursor.fetchone()
+                    print('respuesta');
                     print(result_data)
 
                     if result_data[0] == 1:
@@ -128,6 +129,15 @@ class PersonalViewSet(viewsets.GenericViewSet):
                         return Response(
                             {
                                 'message': 'El documento ya se encuentra registrado',
+                                'personal_maestro': -1
+                            }, 
+                        status = status.HTTP_403_FORBIDDEN
+                        )
+                    elif result_data[0] == -4:
+
+                        return Response(
+                            {
+                                'message': 'El nombre completo ya se encuentra registrado',
                                 'personal_maestro': -1
                             }, 
                         status = status.HTTP_403_FORBIDDEN
