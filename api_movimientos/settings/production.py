@@ -4,7 +4,7 @@ from .base import *
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['54.221.148.178', 'http://54.221.148.178' ]
+ALLOWED_HOSTS = ['190.116.178.163:96', 'http://190.116.178.163:96' ]
 
 DATABASES = {
 
@@ -16,7 +16,7 @@ DATABASES = {
         'PASSWORD': '11hotelbravo',
         'PORT': '1433',
         'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
+            'driver': 'SQL Server Native Client 11.0',
         }
     },
 
@@ -28,7 +28,7 @@ DATABASES = {
         'PASSWORD': '11hotelbravo',
         'PORT': '1433',
         'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
+            'driver': 'SQL Server Native Client 11.0',
         }
     },
 
@@ -40,7 +40,7 @@ DATABASES = {
         'PASSWORD': '11hotelbravo',
         'PORT': '1433',
         'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
+            'driver': 'SQL Server Native Client 11.0',
         }
     },
 
@@ -52,7 +52,7 @@ DATABASES = {
         'PASSWORD': '11hotelbravo',
         'PORT': '1433',
         'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
+            'driver': 'SQL Server Native Client 11.0',
         }
     },
 
