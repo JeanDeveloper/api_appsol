@@ -78,6 +78,8 @@ class ConsultarEstadoViewSet(viewsets.GenericViewSet):
 
                     estado = cursor.fetchone()
 
+                    print(estado);
+
                     return Response({
                         'estado': estado[0]
                     },status= status.HTTP_200_OK)
