@@ -167,7 +167,6 @@ class DetallePersonaViewSet(viewsets.GenericViewSet):
                                     idServicio
                                 ))
                                 detalle_per_data = cursor.fetchall()
-                                # print(detalle_per_data)
 
                                 if detalle_per_data:
 

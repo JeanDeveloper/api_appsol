@@ -15,7 +15,6 @@ class DatosAccesoViewSet(viewsets.GenericViewSet):
         params = self.request.query_params.dict()
 
         if params:
-            
 
             if params['codigo_servicio'] and params['codigo_personal']:
 

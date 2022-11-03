@@ -2,18 +2,22 @@ from rest_framework import serializers
 import datetime
 
 class MovimientosListSerializer(serializers.Serializer):
-    cod_movimiento = serializers.DecimalField(max_digits=18, decimal_places=0)
-    nombres = serializers.CharField(max_length=100, allow_null=True, allow_blank=True)
-    dni = serializers.CharField(max_length=25, allow_null=True, allow_blank=True)
-    sexo = serializers.CharField(max_length=1, allow_null=True, allow_blank=True)
-    cargo = serializers.CharField(max_length=100, allow_blank=True, allow_null=True)
-    empresa = serializers.CharField(max_length=100, allow_null=True, allow_blank=True)
+    cod_movimiento   = serializers.DecimalField(max_digits=18, decimal_places=0)
+    nombres          = serializers.CharField(max_length=100, allow_null=True, allow_blank=True)
+    dni              = serializers.CharField(max_length=25, allow_null=True, allow_blank=True)
+    sexo             = serializers.CharField(max_length=1, allow_null=True, allow_blank=True)
+    cargo            = serializers.CharField(max_length=100, allow_blank=True, allow_null=True)
+    empresa          = serializers.CharField(max_length=100, allow_null=True, allow_blank=True)
     fecha_movimiento = serializers.DateTimeField()
-    fecha_salida = serializers.CharField(allow_null=True, allow_blank=True)
-    # fecha_salida = serializers.DateTimeField(input_formats=['', 'YYYY-MM-DDThh:mm[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z]'], format=['', 'YYYY-MM-DDThh:mm[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z]'], required=False, allow_null = True)
-    tipo_ingreso = serializers.CharField(max_length=50, allow_blank=True)
-    tipo_personal = serializers.CharField(max_length=50, allow_blank=True, allow_null=True)
-    imagen = serializers.CharField(max_length=255)
+    fecha_salida     = serializers.CharField(allow_null=True, allow_blank=True)
+    tipo_ingreso     = serializers.CharField(max_length=50, allow_blank=True)
+    tipo_personal    = serializers.CharField(max_length=50, allow_blank=True, allow_null=True)
+    imagen           = serializers.CharField(max_length=255)
+    cod_dato_acceso  = serializers.IntegerField()
+    guia_mov         = serializers.CharField(max_length=50, allow_blank=True, allow_null=True)
+    foto_guia_mov    = serializers.CharField(max_length=1000, allow_blank=True, allow_null=True)
+    material_mov         = serializers.CharField(max_length=50, allow_blank=True, allow_null=True)
+    foto_material_mov    = serializers.CharField(max_length=1000, allow_blank=True, allow_null=True)
 
     class Meta:
         fields = '__all__'

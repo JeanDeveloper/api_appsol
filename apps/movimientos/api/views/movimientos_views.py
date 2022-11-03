@@ -41,15 +41,15 @@ class MovimientosViewSet(viewsets.GenericViewSet):
                 tipoPersonal   = params['tipoPersonal']
 
                 if(params['idServicio'] in serviciosHayduk):
-                    print('CAMBIANDO EL CURSOR A LA BD DE HAYDUK')
+                    # print('CAMBIANDO EL CURSOR A LA BD DE HAYDUK')
                     conexion = connections['bd_hayduk'].cursor()
 
                 if(params['idServicio'] in serviciosTasa):
-                    print('CAMBIANDO EL CURSOR A LA BD DE TASA')
+                    # print('CAMBIANDO EL CURSOR A LA BD DE TASA')
                     conexion = connections['bd_tasa'].cursor()
 
                 with conexion as cursor:
-                    cursor.execute("EXEC [dbo].[AppCA_ListadoMovimientosPeople_QA] {0}, {1}, {2} , {3}".format(idServicio, tipoPersonal, "''", tipoMovimiento))
+                    cursor.execute("EXEC [dbo].[AppCA_ListadoMovimientosPeople_QA2] {0}, {1}, {2} , {3}".format(idServicio, tipoPersonal, "''", tipoMovimiento))
                     movimientos_data = cursor.fetchall()
 
                     for movimiento in movimientos_data:
@@ -65,6 +65,11 @@ class MovimientosViewSet(viewsets.GenericViewSet):
                             'tipo_ingreso': movimiento[8],
                             'tipo_personal': movimiento[9],
                             'imagen': movimiento[10],
+                            'cod_dato_acceso': movimiento[11],
+                            'guia_mov': movimiento[12],
+                            'foto_guia_mov': movimiento[13],
+                            'material_mov': movimiento[14],
+                            'foto_material_mov': movimiento[15],
                         }
                         data.append(dataTemp)
                     movimientos_serializer = self.get_serializer( data=data, many=True )
@@ -72,6 +77,7 @@ class MovimientosViewSet(viewsets.GenericViewSet):
                         return Response(movimientos_serializer.data, status=status.HTTP_200_OK)
                     else:
                         return Response(movimientos_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
             else:
                 return Response({
                     'error': 'Por favor ingresar los 3 parametros requeridos'
@@ -180,23 +186,20 @@ class MovimientosViewSet(viewsets.GenericViewSet):
 class UltimoMovimientoViewSet(viewsets.GenericViewSet):
 
     def list(self, request):
-        
 
         try:
 
             params = self.request.query_params.dict()
 
             if params.keys().__contains__('codServicio') & params.keys().__contains__('codPersonal'):
-                
+
                 codServicio  = params['codServicio']
                 codPersonal  = params['codPersonal']
 
                 with connection.cursor() as cursor:
-                    cursor.execute ( "EXEC [dbo].[APPS_OBTENER_DATOS_ULTIMO_MOVIMIENTO] {0}, {1}".format(codServicio, codPersonal)  )
+                    cursor.execute ( "EXEC [dbo].[APPS_OBTENER_DATOS_ULTIMO_MOVIMIENTO] {0}, {1}".format(codServicio, codPersonal))
 
                     codigo_movimiento = cursor.fetchone();
-
-                    print(codigo_movimiento);
 
                     if codigo_movimiento:
                         return Response({

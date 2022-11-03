@@ -7,12 +7,6 @@ class PersonalViewSet(viewsets.GenericViewSet):
 
     def create(self, request):
 
-        print('lo que me llega')
-
-        print(request.data)
-
-
-
         if (request.data['codigo_cliente_control'] == '00005'):
             with connections['bd_hayduk']. cursor() as cursor:
                 cursor.execute(
@@ -30,7 +24,6 @@ class PersonalViewSet(viewsets.GenericViewSet):
                 )
 
                 personal_data = cursor.fetchone()
-                print(personal_data)
 
                 if personal_data[0] == 1:
                     return Response({
@@ -95,11 +88,12 @@ class PersonalViewSet(viewsets.GenericViewSet):
                         }, status=status.HTTP_403_FORBIDDEN)
 
             else:
+                print(request.data);
 
                 with connection.cursor() as cursor:
                     cursor.execute("DECLARE @result1 SMALLINT,  @result2 NUMERIC(18,0),  @result VARCHAR(500);"
                         "EXECUTE @result = [dbo].[USP_SICOS_2018_INSERTAR_MODIFICAR_PERSONAL_UNIFICACION_2021]"
-                        " {0}, {1}, {2}, {3}, {4}, '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '', {12}, {13}, {14}, '{15}', '', '', 0,"
+                        " {0}, {1}, {2}, {3}, {4}, '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '', {12}, {13}, {14}, '{15}', '0', '', 0,"
                         "@estado_transaccion=@result1 OUTPUT, @codigo_personal_creado=@result2 OUTPUT "
                         "select @result1 as estado,  @result2 as personal_maestros".format(
                         request.data['codigo_personal'], request.data['codigo_tipo_personal'], request.data['codigo_empresa'],
@@ -116,16 +110,12 @@ class PersonalViewSet(viewsets.GenericViewSet):
                     print(result_data)
 
                     if result_data[0] == 1:
-
                         return Response({
-
                             'message': 'El personal fue creado satisfactoriamente',
                             'personal_maestro': int(result_data[1])
-
                         }, status=status.HTTP_201_CREATED)
 
                     elif result_data[0] == -2:
-
                         return Response(
                             {
                                 'message': 'El documento ya se encuentra registrado',
@@ -134,7 +124,6 @@ class PersonalViewSet(viewsets.GenericViewSet):
                         status = status.HTTP_403_FORBIDDEN
                         )
                     elif result_data[0] == -4:
-
                         return Response(
                             {
                                 'message': 'El nombre completo ya se encuentra registrado',
@@ -144,10 +133,8 @@ class PersonalViewSet(viewsets.GenericViewSet):
                         )
                     else:
                         return Response({
-
                             'message': 'El documento ya se encuentra registrado',
                             'personal_maestro': -1
-
                         }, status=status.HTTP_403_FORBIDDEN)
 
 class TipoPersonalViewSet(viewsets.GenericViewSet):
@@ -185,8 +172,6 @@ class TipoPersonalViewSet(viewsets.GenericViewSet):
                 return Response({
                     'error': 'Por favor ingrese el parametro requerido'
                 }, status=status.HTTP_400_BAD_REQUEST)
-
-
 
         finally:
             pass
