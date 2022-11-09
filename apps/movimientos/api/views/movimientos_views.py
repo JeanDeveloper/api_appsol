@@ -182,7 +182,6 @@ class MovimientosViewSet(viewsets.GenericViewSet):
                             'message': 'hubo un error al momento de crear un movimiento'
                         }, status=status.HTTP_400_BAD_REQUEST)
 
-
 class UltimoMovimientoViewSet(viewsets.GenericViewSet):
 
     def list(self, request):
@@ -212,3 +211,5 @@ class UltimoMovimientoViewSet(viewsets.GenericViewSet):
 
         finally:
             pass
+
+

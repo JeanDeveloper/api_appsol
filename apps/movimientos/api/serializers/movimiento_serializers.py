@@ -23,6 +23,7 @@ class MovimientosListSerializer(serializers.Serializer):
         fields = '__all__'
 
 
+
 class MovimientoCreateSerializer(serializers.Serializer):
     codigo_personal = serializers.DecimalField(max_digits=18, decimal_places=0)
     codigo_servicio = serializers.DecimalField(max_digits=18, decimal_places=0)
@@ -38,3 +39,7 @@ class MovimientoCreateSerializer(serializers.Serializer):
     codigo_area = serializers.DecimalField(max_digits=18, decimal_places=0, allow_null=True)
     num_pase = serializers.CharField(max_length=10, allow_null=True, allow_blank=True, default="00")
     temperatura = serializers.CharField(max_length=10, allow_null=True, allow_blank=True)
+
+
+
+
