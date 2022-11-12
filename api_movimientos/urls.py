@@ -6,8 +6,6 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
-
-
 #CODIGO DEL JWT
 # from rest_framework_simplejwt.views import (
 #     TokenObtainPairView,
@@ -36,30 +34,31 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # URL APP PEOPLE
-    path('appsol/people/movimientos/', include('apps.movimientos.api.routers')),
-    path('appsol/people/autorizantes/', include('apps.autorizantes.api.routers')),
-    path('appsol/people/motivos/', include('apps.motivos.api.routers')),
-    path('appsol/people/areas/', include('apps.areas.api.routers')),
-    path('appsol/people/detalle-personal/', include('apps.detalle_personal.api.routers')),
-    path('appsol/people/personal/', include('apps.personal.api.routers')),
-    path('appsol/people/empresas/', include('apps.empresas.api.routers')),
-    path('appsol/people/cargos/', include('apps.cargos.api.routers')),
-    path('appsol/people/consulta-datos-persona/', include('apps.consulta_datos_persona.api.routers')),
-    path('appsol/people/datos_acceso/', include('apps.datos_acceso.api.routers')),
-    path('appsol/people/fotos_acceso/', include('apps.fotos_acceso.api.routers')),
+    path('solgis/people/areas/',include('apps.areas.api.routers')), #CORRECTO PARA TODOS LOS CLIENTES
 
+    path('solgis/people/movimientos/', include('apps.movimientos.api.routers')),
+    path('solgis/people/autorizantes/', include('apps.autorizantes.api.routers')),
+    path('solgis/people/motivos/', include('apps.motivos.api.routers')),
+    path('solgis/people/detalle-personal/', include('apps.detalle_personal.api.routers')),
+    path('solgis/people/personal/', include('apps.personal.api.routers')),
+    path('solgis/people/empresas/', include('apps.empresas.api.routers')),
+    path('solgis/people/cargos/', include('apps.cargos.api.routers')),
+    path('solgis/people/consulta-datos-persona/', include('apps.consulta_datos_persona.api.routers')),
+    path('solgis/people/datos_acceso/', include('apps.datos_acceso.api.routers')),
+    path('solgis/people/fotos_acceso/', include('apps.fotos_acceso.api.routers')),
 
     # URL APP CARGO
-    path('appsol/cargo/movimientos/', include('apps.movimientos_cargo.api.routers')),
-    path('appsol/cargo/carga/', include('apps.tipos_carga.api.routers')),
-    path('appsol/cargo/vehiculo/', include('apps.consulta_vehiculo.api.routers')),
+    path('solgis/cargo/movimientos/', include('apps.movimientos_cargo.api.routers')),
+    path('solgis/cargo/carga/', include('apps.tipos_carga.api.routers')),
+    path('solgis/cargo/vehiculo/', include('apps.consulta_vehiculo.api.routers')),
 
 
     #URLS GENERALES
-    path('appsol/dispositivo/', include('apps.device.api.routers')),
-    path('appsol/autenticacion/', include('apps.autenticacion.api.routers')),
-    path('appsol/usuario/', include('apps.usuario.api.routers')),
-    
+    path('solgis/autenticacion/', include('apps.autenticacion.api.routers')),
+
+    path('solgis/dispositivo/', include('apps.device.api.routers')),
+    path('solgis/usuario/', include('apps.usuario.api.routers')),
+
 
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
@@ -77,3 +76,12 @@ urlpatterns += [
         'document_root': settings.MEDIA_ROOT,
     }),
 ]
+
+# Usuario
+
+
+
+#     Agente      dni
+#     Supervisor  dni
+#     Cliente
+#     Administrador

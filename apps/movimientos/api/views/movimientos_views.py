@@ -49,7 +49,7 @@ class MovimientosViewSet(viewsets.GenericViewSet):
                     conexion = connections['bd_tasa'].cursor()
 
                 with conexion as cursor:
-                    cursor.execute("EXEC [dbo].[AppCA_ListadoMovimientosPeople_QA2] {0}, {1}, {2} , {3}".format(idServicio, tipoPersonal, "''", tipoMovimiento))
+                    cursor.execute( "EXEC [dbo].[AppCA_ListadoMovimientosPeople] {0}, {1}, {2} , {3}".format( idServicio, tipoPersonal, "''", tipoMovimiento ) )
                     movimientos_data = cursor.fetchall()
 
                     for movimiento in movimientos_data:
@@ -211,5 +211,4 @@ class UltimoMovimientoViewSet(viewsets.GenericViewSet):
 
         finally:
             pass
-
 

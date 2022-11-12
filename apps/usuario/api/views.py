@@ -28,7 +28,7 @@ class UsuarioPermisosViewSet(viewsets.GenericViewSet):
                             'codigo_alcance' : permiso[2]
                         }
                         dataArray.append(dataTemp)
-                    
+
                     permisos_serializer = self.get_serializer( data=dataArray, many=True )
 
                     if permisos_serializer.is_valid():

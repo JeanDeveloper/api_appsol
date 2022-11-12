@@ -15,7 +15,6 @@ class AutenticacionViewSet(viewsets.GenericViewSet):
                 with connections['test_solmar'].cursor() as cursor:
                     cursor.execute( "EXEC [dbo].[APPS_VERIFICAR_DNI_PERSONAL_SOLMAR] '{0}'".format(dni))
                     auth_dni = cursor.fetchone()
-                    print(auth_dni)
 
                     if len(auth_dni) == 1:
                         return Response({

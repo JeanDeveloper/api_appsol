@@ -37,11 +37,11 @@ class ConsultaDatosPersonaViewSet(viewsets.GenericViewSet):
                     tipoMaster  = params['tipoMaster']
 
                     if codServicio in serviciosHayduk:
-                        print('entra a la bd de hayduk')
+                        #print('entra a la bd de hayduk')
                         conexion = connections['bd_hayduk'].cursor()
 
                     if codServicio in serviciosTasa:
-                        print('entra a la bd de tasa')
+                        #print('entra a la bd de tasa')
 
                         conexion = connections['bd_tasa'].cursor()
 

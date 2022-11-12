@@ -46,7 +46,6 @@ class DetallePersonaViewSet(viewsets.GenericViewSet):
                 else:
 
                     if(params['idServicio'] in serviciosHayduk):
-                        print('CAMBIANDO EL CURSOR A LA BD DE HAYDUK')
 
                         with connections['bd_hayduk'].cursor() as cursor:
                             cursor.execute("EXEC [dbo].[AppCA_DETALLE_PERSONAL] '{0}', {1}".format(documento, idServicio))
@@ -103,12 +102,11 @@ class DetallePersonaViewSet(viewsets.GenericViewSet):
 
                     else:
                         if (params['idServicio'] in serviciosTasa):
-                            print('CAMBIANDO EL CURSOR A LA BD DE TASA')
 
                             with connections['bd_tasa'].cursor() as cursor:
                                 cursor.execute("EXEC [dbo].[AppCA_DETALLE_PERSONAL] '{0}', {1}".format(documento, idServicio))
                                 detalle_persona_data = cursor.fetchall()
-                                # print(detalle_persona_data)
+
                             if detalle_persona_data:
                                 for detalle in detalle_persona_data:
                                     dataTemp = {

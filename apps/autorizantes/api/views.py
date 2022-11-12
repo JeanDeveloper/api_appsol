@@ -37,7 +37,7 @@ class AutorizantesViewSet(viewsets.GenericViewSet):
             if params['idServicio'] and params['tipoPersonal']:
                 idServicio = params['idServicio']
                 tipoPersonal = params['tipoPersonal']
-                
+
                 if idServicio == '' or tipoPersonal == '':
                     return Response({
                         'error': 'hay algun campo requerido que se encuentra vacio'
@@ -46,11 +46,11 @@ class AutorizantesViewSet(viewsets.GenericViewSet):
                 else:
 
                     if(params['idServicio'] in serviciosHayduk):
-                        print('CAMBIANDO EL CURSOR A LA BD DE HAYDUK')
+                        # print('CAMBIANDO EL CURSOR A LA BD DE HAYDUK')
                         conexion = connections['bd_hayduk'].cursor()
                     
                     if(params['idServicio'] in serviciosTasa):
-                        print('CAMBIANDO EL CURSOR A LA BD DE TASA')
+                        # print('CAMBIANDO EL CURSOR A LA BD DE TASA')
                         conexion = connections['bd_tasa'].cursor()
 
                     with conexion as cursor:
