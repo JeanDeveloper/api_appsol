@@ -32,21 +32,16 @@ class DetallePersonaViewSet(viewsets.GenericViewSet):
         params = self.request.query_params.dict()
 
         if params:
-
             if params['doc'] and params['idServicio']:
-
                 documento = params['doc']
                 idServicio = params['idServicio']
-
                 if documento == '' or idServicio == '':
                     return Response({
                         'error': 'hay algun campo requerido que se encuentra vacio '
                     }, status=status.HTTP_400_BAD_REQUEST)
-
                 else:
-
                     if(params['idServicio'] in serviciosHayduk):
-
+                        print('entrando a la bd de hayduk')
                         with connections['bd_hayduk'].cursor() as cursor:
                             cursor.execute("EXEC [dbo].[AppCA_DETALLE_PERSONAL] '{0}', {1}".format(documento, idServicio))
                             detalle_persona_data = cursor.fetchall()
@@ -95,18 +90,13 @@ class DetallePersonaViewSet(viewsets.GenericViewSet):
                                         status=status.HTTP_500_INTERNAL_SERVER_ERROR
                                     )
 
-                            else:
-                                return Response({
-                                    'message': 'no hay data en la consulta'
-                                }, status=status.HTTP_200_OK)   
-
                     else:
                         if (params['idServicio'] in serviciosTasa):
+                            print('entrando a la bd de tasa')
 
                             with connections['bd_tasa'].cursor() as cursor:
                                 cursor.execute("EXEC [dbo].[AppCA_DETALLE_PERSONAL] '{0}', {1}".format(documento, idServicio))
                                 detalle_persona_data = cursor.fetchall()
-
                             if detalle_persona_data:
                                 for detalle in detalle_persona_data:
                                     dataTemp = {
@@ -138,13 +128,11 @@ class DetallePersonaViewSet(viewsets.GenericViewSet):
                                     }
                                     data.append(dataTemp)
                                 detalle_per_serializer = self.get_serializer(data=data, many=True)
-
                                 if detalle_per_serializer.is_valid():
                                     return Response(
                                         detalle_per_serializer.data,
                                         status=status.HTTP_200_OK
                                     )
-
                                 else:
                                     return Response(
                                         detalle_per_serializer.errors,
@@ -159,6 +147,7 @@ class DetallePersonaViewSet(viewsets.GenericViewSet):
                         else:
 
                             with  connection.cursor() as cursor:
+                                print('entrando a la bd del multicontrol')
 
                                 cursor.execute("EXEC [dbo].[AppCA_DETALLE_PERSONAL] '{0}',{1}".format(
                                     documento, 
@@ -222,6 +211,7 @@ class DetallePersonaViewSet(viewsets.GenericViewSet):
                 return Response({
                     'error': 'Se necesitan los dos parametros solicitados'
                 }, status=status.HTTP_400_BAD_REQUEST)
+
         else:
 
             return Response({

@@ -42,7 +42,6 @@ class ConsultaDatosPersonaViewSet(viewsets.GenericViewSet):
 
                     if codServicio in serviciosTasa:
                         #print('entra a la bd de tasa')
-
                         conexion = connections['bd_tasa'].cursor()
 
                     with conexion as cursor:
@@ -62,7 +61,6 @@ class ConsultaDatosPersonaViewSet(viewsets.GenericViewSet):
                             'fi_autorizacion': verificacion[9],
                             'fv_autorizacion': verificacion[10],
                         } 
-
 
                         verificacion_data = self.get_serializer(data=data)
 

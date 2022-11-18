@@ -8,7 +8,7 @@ class CargosViewSet(viewsets.GenericViewSet):
     serializer_class = CargosSerializer
 
     def list(self, request):
-        
+
         data = []
 
         try:

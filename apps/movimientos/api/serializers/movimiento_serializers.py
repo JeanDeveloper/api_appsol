@@ -13,11 +13,6 @@ class MovimientosListSerializer(serializers.Serializer):
     tipo_ingreso     = serializers.CharField(max_length=50, allow_blank=True)
     tipo_personal    = serializers.CharField(max_length=50, allow_blank=True, allow_null=True)
     imagen           = serializers.CharField(max_length=255)
-    cod_dato_acceso  = serializers.IntegerField()
-    guia_mov         = serializers.CharField(max_length=50, allow_blank=True, allow_null=True)
-    foto_guia_mov    = serializers.CharField(max_length=1000, allow_blank=True, allow_null=True)
-    material_mov         = serializers.CharField(max_length=50, allow_blank=True, allow_null=True)
-    foto_material_mov    = serializers.CharField(max_length=1000, allow_blank=True, allow_null=True)
 
     class Meta:
         fields = '__all__'

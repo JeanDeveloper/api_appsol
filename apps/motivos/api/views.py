@@ -3,16 +3,12 @@ from django.db import connection, connections
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
-
 class MotivosListViewSet(viewsets.GenericViewSet):
     serializer_class = MotivosListSerializer
 
     def list(self, request):
 
         data = []
-
-        # codigoClientes = ['00005', ]
-
 
         params = self.request.query_params.dict()
 
@@ -92,14 +88,10 @@ class MotivosListViewSet(viewsets.GenericViewSet):
                                             'codigo': area[0],
                                             'tipo': area[1],
                                         }
-
                                         data.append(dataTemp)
-
                                     area_serializer = self.get_serializer(data=data, many=True)
-
                                     if area_serializer.is_valid():
                                         return Response(area_serializer.data, status=status.HTTP_200_OK)
-
                                     else:
                                         return Response(area_serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
                                 else:

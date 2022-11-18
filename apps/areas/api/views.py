@@ -46,7 +46,7 @@ class AreasListViewSet(viewsets.GenericViewSet):
                 else:
 
                     if(params['idServicio'] in serviciosHayduk):
-                        # print('CAMBIANDO EL CURSOR A LA BD DE HAYDUK')
+                        print('CAMBIANDO EL CURSOR A LA BD DE HAYDUK')
 
                         with connections['bd_hayduk'].cursor() as cursor:
                             cursor.execute("EXEC [dbo].[AppCA_LISTAR_AREAS] '', {0} ".format(idServicio))

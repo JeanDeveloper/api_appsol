@@ -8,7 +8,6 @@ class EmpresasViewSet(viewsets.GenericViewSet):
 
     def list(self, request):
         data = []
-
         try:
             params = self.request.query_params.dict()
 
@@ -17,7 +16,7 @@ class EmpresasViewSet(viewsets.GenericViewSet):
                 nombreEmpresa = params['nombreEmpresa']
 
                 if codEmpresa == '00005': #ES DE HAYDUK
-                    print('PARA BUSCAR EMPRESA EN HAYDUK')
+                    # print('PARA BUSCAR EMPRESA EN HAYDUK')
 
                     with connections['bd_hayduk'].cursor() as cursor:
                         cursor.execute("EXEC [dbo].[USP_SICOS_2019_BUSCAR_EMPRESAS_S_COMBO_UNIFICACION] '', '-1' ")
@@ -36,10 +35,11 @@ class EmpresasViewSet(viewsets.GenericViewSet):
                             return Response(empresas_serializer.data, status=status.HTTP_200_OK)
                         else:
                             return Response(empresas_serializer.errors, status= status.HTTP_400_BAD_REQUEST)
+
                 else:
 
                     if codEmpresa == '00002':  #ES DE TASA
-                        print('PARA BUSCAR EMPRESA EN TASA')
+                        # print('PARA BUSCAR EMPRESA EN TASA')
                         with connections['bd_tasa'].cursor() as cursor:
                             cursor.execute("EXEC [dbo].[USP_SICOS_2019_BUSCAR_EMPRESAS_S_COMBO_UNIFICACION] '', '-1' ")
                             empresas_data = cursor.fetchall()
@@ -61,7 +61,7 @@ class EmpresasViewSet(viewsets.GenericViewSet):
                     else:
 
                         with connection.cursor() as cursor:
-                            print('PARA BUSCAR EMPRESA EN EL MULTICONTROL')
+                            # print('PARA BUSCAR EMPRESA EN EL MULTICONTROL')
                             cursor.execute(" EXEC [dbo].[USP_SICOS_2019_BUSCAR_EMPRESAS_S_COMBO_UNIFICACION] '{0}', '-1', '{1}' ".format(nombreEmpresa, codEmpresa))
                             empresas_data = cursor.fetchall()
 
@@ -83,6 +83,5 @@ class EmpresasViewSet(viewsets.GenericViewSet):
                 return Response({
                     'error': 'Por favor ingresar los 2 parametros requeridos'
                 }, status=status.HTTP_400_BAD_REQUEST)
-
         finally:
             pass

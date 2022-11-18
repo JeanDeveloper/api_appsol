@@ -7,6 +7,31 @@ class DatosAccesoViewSet(viewsets.GenericViewSet):
 
     serializer_class = DatosAccesoSerializer
 
+    def create( self, request ):
+
+        try:
+
+            with connection.cursor() as cursor:
+
+                cursor.execute(
+                    "DECLARE @result INT;"
+                    "EXEC [dbo].[APPS_REGISTRAR_DATOS_ACCESO] {0}, '{1}', '{2}', {3}, @codigo_dato_acceso_creado = @result OUTPUT;"
+                    "SELECT @result as codigo_dato_acceso".format(
+                        request.data['cod_mov_peatonal'], request.data['descripcion'], 
+                        request.data['creado_por'], request.data['cod_tipo_dato_acceso']
+                    )   
+                )
+
+                response = cursor.fetchone()
+
+                if response: 
+                    return Response({
+                        'codigo_dato_acceso' : response[0] 
+                    }, status=status.HTTP_201_CREATED)
+
+        except AssertionError:
+            print(AssertionError)
+
     def list(self, request):
 
         data = []
@@ -14,26 +39,31 @@ class DatosAccesoViewSet(viewsets.GenericViewSet):
 
         if params:
 
-            if params['codigo_servicio'] and params['codigo_personal']:
+            if params['tipo_movimiento'] and params['codigo_servicio'] and params['documento']:
 
                 with connection.cursor() as cursor:
 
-                    cursor.execute('EXEC [dbo].[APPS_OBTENER_DATOS_ACCESO] {0}, {1}'.format(
-                        params['codigo_servicio'], params['codigo_personal']
+                    cursor.execute('EXEC [dbo].[APPS_OBTENER_DATOS_ACCESO_QA] {0}, {1}, {2}'.format(
+                        params['tipo_movimiento'], params['codigo_servicio'], params['documento']
                     ))
 
-                    datos_acceso = cursor.fetchone()
-                    data = {
-                        'codigo_datos_acceso'       : datos_acceso[0],
-                        'codigo_movimiento'         : datos_acceso[1],
-                        'guia_movimiento'           : datos_acceso[2],
-                        'foto_guia_movimiento'      : datos_acceso[3],
-                        'material_movimiento'       : datos_acceso[4],
-                        'foto_material_movimiento'  : datos_acceso[5],
-                        'fecha_creacion'            : datos_acceso[6]
-                    }
+                    datos_acceso = cursor.fetchall()
 
-                    datos_acceso_serializer = self.get_serializer(data=data)
+                    for dato_acceso in datos_acceso:
+
+                        dataTemp = {
+                            'codigo_dato_acceso'    : dato_acceso[0],
+                            'codigo_mov_peatonal'   : dato_acceso[1],
+                            'descripcion'           : dato_acceso[2],
+                            'fecha_creacion'        : dato_acceso[3],
+                            'creado_por'            : dato_acceso[4],
+                            'cod_tipo_dato_acceso'  : dato_acceso[5],
+                            'pathImage'             : dato_acceso[6]
+                        }
+
+                        data.append(dataTemp)
+
+                    datos_acceso_serializer = self.get_serializer( data = data, many = True)
 
                     if datos_acceso_serializer.is_valid():
                         return Response(datos_acceso_serializer.data, status=status.HTTP_200_OK )
@@ -49,7 +79,7 @@ class DatosAccesoSalidaViewSet(viewsets.GenericViewSet):
 
         params = self.request.query_params.dict()
 
-        if params.keys().__contains__('codServicio') & params.keys().__contains__('documento'):
+        if params.keys().__contains__('') & params.keys().__contains__('documento'):
             codServicio = params['codServicio']
             documento   = params['documento']
 
@@ -58,8 +88,6 @@ class DatosAccesoSalidaViewSet(viewsets.GenericViewSet):
                 datos_acceso_salida = cursor.fetchone()
 
                 print(datos_acceso_salida)
-                
-                
 
                 data = {
                     'cod_mov'          : '' if datos_acceso_salida == None else datos_acceso_salida[0],
@@ -81,5 +109,3 @@ class DatosAccesoSalidaViewSet(viewsets.GenericViewSet):
             return Response({
                 'error': 'Por favor ingrese los parametros requeridos'
             }, status=status.HTTP_400_BAD_REQUEST )
-
-

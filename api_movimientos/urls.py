@@ -34,18 +34,17 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # URL APP PEOPLE
-    path('solgis/people/areas/',include('apps.areas.api.routers')), #CORRECTO PARA TODOS LOS CLIENTES
-
-    path('solgis/people/movimientos/', include('apps.movimientos.api.routers')),
-    path('solgis/people/autorizantes/', include('apps.autorizantes.api.routers')),
-    path('solgis/people/motivos/', include('apps.motivos.api.routers')),
-    path('solgis/people/detalle-personal/', include('apps.detalle_personal.api.routers')),
-    path('solgis/people/personal/', include('apps.personal.api.routers')),
-    path('solgis/people/empresas/', include('apps.empresas.api.routers')),
-    path('solgis/people/cargos/', include('apps.cargos.api.routers')),
-    path('solgis/people/consulta-datos-persona/', include('apps.consulta_datos_persona.api.routers')),
-    path('solgis/people/datos_acceso/', include('apps.datos_acceso.api.routers')),
-    path('solgis/people/fotos_acceso/', include('apps.fotos_acceso.api.routers')),
+    path('solgis/people/areas/',include('apps.areas.api.routers')), #MULTICONTROL, HAYDUK Y TASA
+    path('solgis/people/movimientos/', include('apps.movimientos.api.routers')), #MULTICONTROL, HAYDUK Y TASA
+    path('solgis/people/autorizantes/', include('apps.autorizantes.api.routers')), #MULTICONTROL, HAYDUK Y TASA
+    path('solgis/people/motivos/', include('apps.motivos.api.routers')), #MULTICONTROL, HAYDUK Y TASA
+    path('solgis/people/detalle-personal/', include('apps.detalle_personal.api.routers')), #MULTICONTROL
+    path('solgis/people/empresas/', include('apps.empresas.api.routers')), #MULTICONTROL, HAYDUK Y TASA
+    path('solgis/people/cargos/', include('apps.cargos.api.routers')), #MULTICONTROL, HAYDUK Y TASA
+    path('solgis/people/consulta-datos-persona/', include('apps.consulta_datos_persona.api.routers')), #MULTICONTROL
+    path('solgis/people/personal/', include('apps.personal.api.routers')),#MULTICONTROL
+    path('solgis/people/datos_acceso/', include('apps.datos_acceso.api.routers')), #MULTICONTROL
+    path('solgis/people/fotos_acceso/', include('apps.fotos_acceso.api.routers')), #MULTICONTROL
 
     # URL APP CARGO
     path('solgis/cargo/movimientos/', include('apps.movimientos_cargo.api.routers')),
@@ -55,7 +54,6 @@ urlpatterns = [
 
     #URLS GENERALES
     path('solgis/autenticacion/', include('apps.autenticacion.api.routers')),
-
     path('solgis/dispositivo/', include('apps.device.api.routers')),
     path('solgis/usuario/', include('apps.usuario.api.routers')),
 
