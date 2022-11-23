@@ -41,7 +41,7 @@ class DetallePersonaViewSet(viewsets.GenericViewSet):
                     }, status=status.HTTP_400_BAD_REQUEST)
                 else:
                     if(params['idServicio'] in serviciosHayduk):
-                        print('entrando a la bd de hayduk')
+                        # print('entrando a la bd de hayduk')
                         with connections['bd_hayduk'].cursor() as cursor:
                             cursor.execute("EXEC [dbo].[AppCA_DETALLE_PERSONAL] '{0}', {1}".format(documento, idServicio))
                             detalle_persona_data = cursor.fetchall()
@@ -92,7 +92,7 @@ class DetallePersonaViewSet(viewsets.GenericViewSet):
 
                     else:
                         if (params['idServicio'] in serviciosTasa):
-                            print('entrando a la bd de tasa')
+                            # print('entrando a la bd de tasa')
 
                             with connections['bd_tasa'].cursor() as cursor:
                                 cursor.execute("EXEC [dbo].[AppCA_DETALLE_PERSONAL] '{0}', {1}".format(documento, idServicio))
@@ -147,7 +147,7 @@ class DetallePersonaViewSet(viewsets.GenericViewSet):
                         else:
 
                             with  connection.cursor() as cursor:
-                                print('entrando a la bd del multicontrol')
+                                # print('entrando a la bd del multicontrol')
 
                                 cursor.execute("EXEC [dbo].[AppCA_DETALLE_PERSONAL] '{0}',{1}".format(
                                     documento, 
@@ -186,6 +186,7 @@ class DetallePersonaViewSet(viewsets.GenericViewSet):
                                             'img':                    detalle[23],
                                             'nro_pase':               detalle[24],
                                         }
+
                                         data.append(dataTemp)
 
                                     detalle_per_serializer = self.get_serializer(data=data, many=True)

@@ -38,28 +38,23 @@ urlpatterns = [
     path('solgis/people/movimientos/', include('apps.movimientos.api.routers')), #MULTICONTROL, HAYDUK Y TASA
     path('solgis/people/autorizantes/', include('apps.autorizantes.api.routers')), #MULTICONTROL, HAYDUK Y TASA
     path('solgis/people/motivos/', include('apps.motivos.api.routers')), #MULTICONTROL, HAYDUK Y TASA
-    path('solgis/people/detalle-personal/', include('apps.detalle_personal.api.routers')), #MULTICONTROL
+    path('solgis/people/detalle-personal/', include('apps.detalle_personal.api.routers')), #MULTICONTROL, HAYUK Y TASA
     path('solgis/people/empresas/', include('apps.empresas.api.routers')), #MULTICONTROL, HAYDUK Y TASA
     path('solgis/people/cargos/', include('apps.cargos.api.routers')), #MULTICONTROL, HAYDUK Y TASA
-    path('solgis/people/consulta-datos-persona/', include('apps.consulta_datos_persona.api.routers')), #MULTICONTROL
-    path('solgis/people/personal/', include('apps.personal.api.routers')),#MULTICONTROL
-    path('solgis/people/datos_acceso/', include('apps.datos_acceso.api.routers')), #MULTICONTROL
-    path('solgis/people/fotos_acceso/', include('apps.fotos_acceso.api.routers')), #MULTICONTROL
+    path('solgis/people/consulta-datos-persona/', include('apps.consulta_datos_persona.api.routers')), #MULTICONTROL, HAYDUK Y TASA.
+    path('solgis/people/personal/', include('apps.personal.api.routers')),#MULTICONTROL, HAYDUK Y TASA
+    path('solgis/people/datos_acceso/', include('apps.datos_acceso.api.routers')), #MULTICONTROL, HAYDUK Y TASA
+    path('solgis/people/fotos_acceso/', include('apps.fotos_acceso.api.routers')), #MULTICONTROL, HAYDUK Y TASA
 
     # URL APP CARGO
     path('solgis/cargo/movimientos/', include('apps.movimientos_cargo.api.routers')),
     path('solgis/cargo/carga/', include('apps.tipos_carga.api.routers')),
     path('solgis/cargo/vehiculo/', include('apps.consulta_vehiculo.api.routers')),
 
-
     #URLS GENERALES
     path('solgis/autenticacion/', include('apps.autenticacion.api.routers')),
     path('solgis/dispositivo/', include('apps.device.api.routers')),
     path('solgis/usuario/', include('apps.usuario.api.routers')),
-
-
-    # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     # URLS THIRD
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
@@ -75,10 +70,9 @@ urlpatterns += [
     }),
 ]
 
+
+
 # Usuario
-
-
-
 #     Agente      dni
 #     Supervisor  dni
 #     Cliente

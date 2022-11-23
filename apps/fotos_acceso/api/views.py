@@ -30,9 +30,7 @@ class FotosAccesoViewSet(viewsets.GenericViewSet):
                         'ubicacion'  : foto_data[7],
                     }
 
-                    print(foto_data);
-                    
-                    foto_serializer = self.get_serializer( data = data)
+                    foto_serializer = self.get_serializer( data = data )
 
                     if foto_serializer.is_valid():
                         return Response(foto_serializer.data, status = status.HTTP_200_OK)
@@ -61,8 +59,6 @@ class CopiarFotoViewSet(viewsets.GenericViewSet):
                     cursor.execute("EXECUTE [dbo].[AppSolgis_Copiar_fotoId] {0}, {1}, {2} ".format(cod_movimiento, cod_personal, dato_acceso))
 
                     copia_foto = cursor.fetchone()
-
-                    print(copia_foto);
 
                     if len(copia_foto) == 1:
                         return Response({

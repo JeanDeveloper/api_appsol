@@ -20,7 +20,6 @@ class ConsultaVehiculoViewSet(viewsets.GenericViewSet):
                     codServicio = params['codServicio']
                     placa       = params['placa']
 
-
                     cursor.execute(" EXEC [CONSULTAR_DATOS_VEHICULO] {0}, {1} ". format(
                         placa, codServicio
                     ))

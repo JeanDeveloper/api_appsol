@@ -41,11 +41,9 @@ class MovimientosViewSet(viewsets.GenericViewSet):
                 tipoPersonal   = params['tipoPersonal']
 
                 if(params['idServicio'] in serviciosHayduk):
-                    # print('CAMBIANDO EL CURSOR A LA BD DE HAYDUK')
                     conexion = connections['bd_hayduk'].cursor()
 
                 if(params['idServicio'] in serviciosTasa):
-                    # print('CAMBIANDO EL CURSOR A LA BD DE TASA')
                     conexion = connections['bd_tasa'].cursor()
 
                 with conexion as cursor:
@@ -105,53 +103,66 @@ class MovimientosViewSet(viewsets.GenericViewSet):
         if  request.data['codigo_servicio'] in serviciosHayduk:
 
             with connections['bd_hayduk'].cursor() as cursor:
-                cursor.execute( "EXEC [dbo].[APPS_People_Crear_Movimiento] {0}, {1}, {2}, {3}, {4}, {5}, {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}'"
+                cursor.execute( 
+                    "DECLARE @result1 SMALLINT, @result2 NUMERIC(18,0);"
+                    "EXEC [dbo].[APPS_People_Crear_Movimiento] {0}, {1}, {2}, {3}, {4}, {5}, {6}, '00', '{7}',"
+                    "@estado_transaccion=@result1 OUTPUT, @codigo_movimiento_creado=@result2 OUTPUT;  "
+                    "SELECT @result1 as estado_transaccion, @result2 as cod_mov_peatonal "
                     .format(
                         request.data['codigo_personal'],    request.data['codigo_servicio'], request.data['codigo_tipo_movimiento'],
                         request.data['codigo_tipo_motivo'], request.data['codigo_empresa'],  request.data['autorizado_por'],
-                        request.data['codigo_area'],        '00',  request.data['tipo_persona'], request.data['creado_por'],
-                        request.data['guia'], request.data['url_foto_guia'], request.data['material'], 
-                        request.data['url_foto_material']
-                    ) )
-                movimiento_id = cursor.fetchone()
+                        request.data['codigo_area'],  request.data['creado_por']
+                    )
+                )
 
-                if movimiento_id:
+                response = cursor.fetchone()
+
+                if response:
                     return Response({
                         'message': 'movimiento creado satisfactoriamente',
-                        'id_movimiento': int(movimiento_id[0])
+                        'codigo_transaccion': response[0],
+                        'id_movimiento': int(response[1])
                     }, status=status.HTTP_201_CREATED)
                 else:
                     return Response({
                         'message': 'hubo un error al momento de crear un movimiento'
                     }, status=status.HTTP_400_BAD_REQUEST)
+
         else:
 
             if request.data['codigo_servicio'] in serviciosTasa:
-                # print('creacion de movimiento para tasa')
 
                 with connections['bd_tasa'].cursor() as cursor:
-                    cursor.execute( " EXEC [dbo].[APPS_People_Crear_Movimiento]  {0}, {1}, {2}, {3}, {4}, {5}, {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}' "
+                    cursor.execute(
+                        "DECLARE @result1 SMALLINT, @result2 NUMERIC(18,0);"
+                        "EXEC [dbo].[APPS_People_Crear_Movimiento] {0}, {1}, {2}, {3}, {4}, {5}, {6}, '00', '{7}',"
+                        "@estado_transaccion=@result1 OUTPUT, @codigo_movimiento_creado=@result2 OUTPUT;  "
+                        "SELECT @result1 as estado_transaccion, @result2 as cod_mov_peatonal "
                         .format(
-                            request.data['codigo_personal'], request.data['codigo_servicio'], request.data['codigo_tipo_movimiento'],
-                            request.data['codigo_tipo_motivo'], request.data['codigo_empresa'], request.data['autorizado_por'],
-                            request.data['codigo_area'], '00',  request.data['tipo_persona'], request.data['creado_por'],
-                            request.data['guia'], request.data['url_foto_guia'], request.data['material'], request.data['url_foto_material']
-                        ))
-                    movimiento_id = cursor.fetchone()
+                            request.data['codigo_personal'],    request.data['codigo_servicio'], request.data['codigo_tipo_movimiento'],
+                            request.data['codigo_tipo_motivo'], request.data['codigo_empresa'],  request.data['autorizado_por'],
+                            request.data['codigo_area'],  request.data['creado_por']
+                        )
+                    )
 
-                    if movimiento_id:
+                    response = cursor.fetchone()
+                    print(response)
+
+
+                    if response:
                         return Response({
                             'message': 'movimiento creado satisfactoriamente',
-                            'id_movimiento': int(movimiento_id[0])
+                            'codigo_transaccion': response[0],
+                            'id_movimiento': int(response[1])
                         }, status=status.HTTP_201_CREATED)
                     else:
                         return Response({
                             'message': 'hubo un error al momento de crear un movimiento'
                         }, status=status.HTTP_400_BAD_REQUEST)
-            else:   
+
+            else:
 
                 with connection.cursor() as cursor:
-
                     cursor.execute(
                         "DECLARE @result SMALLINT, @result1 SMALLINT, @result2 NUMERIC(18,0);"
                         "EXECUTE @result = [dbo].[APPS_CREAR_MOVIMIENTO_QA]"
@@ -159,7 +170,7 @@ class MovimientosViewSet(viewsets.GenericViewSet):
                         "@estado_transaccion=@result1 OUTPUT, @codigo_movimiento_creado=@result2 OUTPUT;  "
                         "SELECT @result1 as estado_transaccion, @result2 as cod_mov_peatonal ".format(
                             request.data['codigo_personal'],    request.data['codigo_servicio'], request.data['codigo_tipo_movimiento'],
-                            request.data['codigo_tipo_motivo'], request.data['codigo_empresa'], request.data['autorizado_por'],
+                            request.data['codigo_tipo_motivo'], request.data['codigo_empresa'],  request.data['autorizado_por'],
                             request.data['creado_por'],         request.data['codigo_area'],
                         )   
                     )
@@ -229,5 +240,6 @@ class UltimoMovimientoViewSet(viewsets.GenericViewSet):
                         return Response({
                             'message': 'hubo un error al momento de obtener el ultimo movimiento'
                         }, status=status.HTTP_400_BAD_REQUEST)
+        
         finally:
             pass

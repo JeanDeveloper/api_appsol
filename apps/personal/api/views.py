@@ -61,7 +61,6 @@ class PersonalViewSet(viewsets.GenericViewSet):
                     )
 
                     result_data = cursor.fetchone()
-                    #print(result_data)
 
                     if result_data[0] == 1:
 
@@ -103,8 +102,6 @@ class PersonalViewSet(viewsets.GenericViewSet):
                         request.data['codigo_cliente_control']
                     ))
                     result_data = cursor.fetchone()
-                    #print('respuesta');
-                    #print(result_data)
 
                     if result_data[0] == 1:
                         return Response({
