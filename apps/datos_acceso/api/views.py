@@ -96,9 +96,11 @@ class DatosAccesoViewSet(viewsets.GenericViewSet):
                 if params['tipo_movimiento'] and params['codigo_servicio'] and params['documento']:
 
                     if params['codigo_servicio'] in serviciosHayduk:
+                        print('hayduk')
                         conectionCursor = connections['bd_hayduk'].cursor()
 
                     if params['codigo_servicio'] in serviciosTasa:
+                        print('tasa')
                         conectionCursor = connections['bd_tasa'].cursor()
 
                     with conectionCursor as cursor:
