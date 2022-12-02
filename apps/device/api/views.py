@@ -103,12 +103,12 @@ class RelacionDispositivoServicioViewSet(viewsets.GenericViewSet):
                 serial = params['serial']
 
                 with connections['test_solmar'].cursor() as cursor:
-                    cursor.execute("EXEC [dbo].[APPS_OBTENER_INFO_DISPOSITIVO_SERVICIO] '{0}'".format(serial))
+                    cursor.execute("EXEC [dbo].[APPS_OBTENER_INFO_DISPOSITIVO_SERVICIO_QA] '{0}'".format(serial))
                     dispositivo_x_servicio = cursor.fetchone()
 
                     data = {
                         'codigo_dispositivo'   : dispositivo_x_servicio[0],
-                        'codigo_servicio'      : dispositivo_x_servicio[1],
+                        'codigo_servicio'      : int(dispositivo_x_servicio[1]),
                         'codigo_cliente'       : dispositivo_x_servicio[2],
                         'codigo_sub_area'      : int(dispositivo_x_servicio[3]),
                         'nombre_area'          : dispositivo_x_servicio[4],
@@ -117,7 +117,9 @@ class RelacionDispositivoServicioViewSet(viewsets.GenericViewSet):
                         'nombre_cliente'       : dispositivo_x_servicio[7],
                         'alias_sede'           : dispositivo_x_servicio[8],
                         'codigo_tipo_servicio' : int(dispositivo_x_servicio[9]),
-                        'nombre_puesto'        : dispositivo_x_servicio[10],
+                        'codigo_puesto'        : int(dispositivo_x_servicio[10]),
+                        'nombre_puesto'        : dispositivo_x_servicio[11],
+                        'codigo_perfil'        : int(dispositivo_x_servicio[12]),
                     }
 
                     return Response(data, status= status.HTTP_200_OK)

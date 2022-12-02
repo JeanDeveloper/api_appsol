@@ -49,3 +49,58 @@ class AutenticacionViewSet(viewsets.GenericViewSet):
 
         finally:
             pass
+
+    def create(self, request):
+
+        try:
+            if request.data['usuario'] and request.data['clave']:
+                usuario = request.data['usuario']
+                clave   = request.data['clave']
+
+                with connections['test_solmar'].cursor() as cursor:
+                    cursor.execute( "EXEC [dbo].[LOGIN_APP_SOLGIS_v2] '{0}', '{1}'".format(usuario, clave))
+                    auth_user = cursor.fetchone()
+
+                    if auth_user:
+
+                        dataTemp = {
+
+                            'codigo_usuario'     : auth_user[0],
+                            'documento'          : auth_user[1],
+                            'nombres'            : auth_user[2],
+                            'apellidos'          : auth_user[3],
+                            'usuario'            : auth_user[4],
+                            'codigo_cliente'     : auth_user[5],
+                            'codigo_tipo_usuario': auth_user[6],
+
+                        }
+
+                        auth_user_serializer = AutenticacionLoginSerializer(data = dataTemp)
+
+                        if auth_user_serializer.is_valid():
+                            return Response(auth_user_serializer.data, status=status.HTTP_200_OK)
+                        else:
+                            return Response({
+                                'message': 'hubo un error interno'
+                            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+                    else:
+                        return Response({
+                            'message': 'Las credenciales son incorrectas.'
+                        }, status=status.HTTP_400_BAD_REQUEST)
+
+            else:
+                return Response({
+                    'message': 'se requiere el usuario y la contraseña.'
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+
+        finally:
+            pass
+
+
+
+
+
+
+

@@ -240,6 +240,6 @@ class UltimoMovimientoViewSet(viewsets.GenericViewSet):
                         return Response({
                             'message': 'hubo un error al momento de obtener el ultimo movimiento'
                         }, status=status.HTTP_400_BAD_REQUEST)
-        
+
         finally:
             pass
