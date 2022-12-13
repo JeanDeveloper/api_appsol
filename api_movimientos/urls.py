@@ -34,7 +34,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # URL APP PEOPLE
-    path('solgis/people/areas/',include('apps.areas.api.routers')), #MULTICONTROL, HAYDUK Y TASA
+    path('solgis/people/areas/', include('apps.areas.api.routers')), #MULTICONTROL, HAYDUK Y TASA
     path('solgis/people/movimientos/', include('apps.movimientos.api.routers')), #MULTICONTROL, HAYDUK Y TASA
     path('solgis/people/autorizantes/', include('apps.autorizantes.api.routers')), #MULTICONTROL, HAYDUK Y TASA
     path('solgis/people/motivos/', include('apps.motivos.api.routers')), #MULTICONTROL, HAYDUK Y TASA
@@ -45,6 +45,8 @@ urlpatterns = [
     path('solgis/people/personal/', include('apps.personal.api.routers')),#MULTICONTROL, HAYDUK Y TASA
     path('solgis/people/datos_acceso/', include('apps.datos_acceso.api.routers')), #MULTICONTROL, HAYDUK Y TASA
     path('solgis/people/fotos_acceso/', include('apps.fotos_acceso.api.routers')), #MULTICONTROL, HAYDUK Y TASA
+    path('solgis/people/cliente/', include('apps.cliente.api.routers')), 
+
 
     # URL APP CARGO
     path('solgis/cargo/movimientos/', include('apps.movimientos_cargo.api.routers')),

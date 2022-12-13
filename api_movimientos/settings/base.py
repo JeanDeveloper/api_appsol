@@ -52,7 +52,8 @@ LOCAL_APPS = [
     'apps.movimientos_cargo',
     'apps.tipos_carga',
     'apps.usuario',
-    'apps.fotos_acceso'
+    'apps.fotos_acceso',
+    'apps.cliente'
 ]
 
 THIRD_APPS = [

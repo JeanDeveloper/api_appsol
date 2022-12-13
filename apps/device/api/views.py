@@ -29,35 +29,35 @@ class RegistrarDispositivoViewSet(viewsets.GenericViewSet):
                     'estado' : dispositivo_data[0],
                     'message': 'El dispositivo fue registrado satisfactoriamente',
                     'id_dispositivo': int(dispositivo_data[1])
-                }, status=status.HTTP_201_CREATED)
+                }, status = status.HTTP_201_CREATED )
 
             elif dispositivo_data[0] == 2:
                 return Response({
                     'estado' : dispositivo_data[0],
                     'message': 'El dispositivo se encuentra registrado, pero no esta habilitado',
                     'id_dispositivo': int(dispositivo_data[1])
-                }, status=status.HTTP_403_FORBIDDEN)
+                }, status = status.HTTP_403_FORBIDDEN )
 
             elif dispositivo_data[0] == 3:
                 return Response({
                     'estado' : dispositivo_data[0],
                     'message': 'El dispositivo se encuentra registrado y esta habilitado',
                     'id_dispositivo': int(dispositivo_data[1])
-                }, status=status.HTTP_403_FORBIDDEN)
+                }, status = status.HTTP_403_FORBIDDEN )
 
             elif dispositivo_data[0] == 4:
                 return Response({
                     'estado' : dispositivo_data[0],
                     'message': 'El numero ya se encuentra registrado',
                     'id_dispositivo': int(dispositivo_data[1])
-                }, status = status.HTTP_403_FORBIDDEN)
+                }, status = status.HTTP_403_FORBIDDEN )
 
             else:
                 return Response({
                     'estado' : dispositivo_data[0],
                     'message': 'El dispositivo no se ha podido registrar',
                     'id_dispositivo': -1
-                }, status=status.HTTP_400_BAD_REQUEST)
+                }, status = status.HTTP_400_BAD_REQUEST )
 
 class ConsultarEstadoViewSet(viewsets.GenericViewSet):
 
@@ -78,15 +78,15 @@ class ConsultarEstadoViewSet(viewsets.GenericViewSet):
 
                     estado = cursor.fetchone()
 
-                    print(estado);
+                    # print(estado);
 
                     return Response({
                         'estado': estado[0]
-                    },status= status.HTTP_200_OK)
+                    },status = status.HTTP_200_OK)
             else:
                 return Response({
                     'error': 'No se encontro el parametro solicitado'
-                }, status= status.HTTP_400_BAD_REQUEST)
+                }, status = status.HTTP_400_BAD_REQUEST)
         finally:
             pass
 
@@ -128,11 +128,11 @@ class RelacionDispositivoServicioViewSet(viewsets.GenericViewSet):
 
                 return Response({
                     'error': 'No se encontro el parametro solicitado'},
-                    status= status.HTTP_400_BAD_REQUEST
+                    status = status.HTTP_400_BAD_REQUEST
                 )
 
         except NameError:
                 return Response({
                     'error':NameError},
-                    status= status.HTTP_400_BAD_REQUEST
+                    status = status.HTTP_400_BAD_REQUEST
                 )
