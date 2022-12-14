@@ -1,6 +1,6 @@
-from rest_framework.routers import DefaultRouter
 from apps.cliente.api.serializers import *
 from apps.cliente.api.views import *
+from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register('', ClientesViewSet, basename='clientes')
